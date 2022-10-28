@@ -15,7 +15,9 @@ export default class App extends React.Component<unknown, AppState> {
   render(): React.ReactNode {
     return (
       <div className="app">
-        <button onClick={() => this.setState(state => ({ display: !state.display }))}>Toggle Display</button>
+        <div>
+          <button onClick={() => this.setState(state => ({ display: !state.display }))}>Toggle Display</button>
+        </div>
         {this.state.display && <Counter
           onComponentDidMount={() => console.log('Component Did Mount was called')}
           onComponentDidUpdate={() => console.log('Component Did Updated was called')}
@@ -23,6 +25,7 @@ export default class App extends React.Component<unknown, AppState> {
           onRender={() => console.log('Render was called')}
           onConstruction={() => console.log('Constructor was called')}
         />}
+        Open the Console and interact with the buttons to see the different component events being called.
       </div>
     )
   }

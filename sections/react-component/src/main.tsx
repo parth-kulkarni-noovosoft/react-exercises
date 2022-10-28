@@ -1,16 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import LifeCycleDemo from './routes/lifecycle'
-import ClassPropertiesDemo from './routes/classProperties'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import LifecycleDemo from './routes/lifecycle'
+import ClassPropertiesDemo from './routes/classProperties'
+import InstancePropertiesDemo from './routes/instanceProperties';
+import SetStateDemo from './routes/setState';
+
 import './index.css'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <div>
-      <a className='link' href="/life-cycle">Life Cycle</a>
+      <a className='link' href="/lifecycle">Lifecycle</a>
       <a className='link' href="/class-properties">Class Properties</a>
+      <a className='link' href="/instance-properties">Instance Properties</a>
+      <a className='link' href="/set-state">Set State</a>
     </div>
   },
   {
@@ -18,8 +24,16 @@ const router = createBrowserRouter([
     element: <ClassPropertiesDemo />
   },
   {
-    path: "/life-cycle",
-    element: <LifeCycleDemo />
+    path: "/lifecycle",
+    element: <LifecycleDemo />
+  },
+  {
+    path: '/instance-properties',
+    element: <InstancePropertiesDemo />
+  },
+  {
+    path: '/set-state',
+    element: <SetStateDemo />
   }
 ])
 

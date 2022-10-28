@@ -1,6 +1,6 @@
 import React from "react";
 
-type CounterState = {
+export type CounterState = {
     count: number;
 };
 
@@ -44,7 +44,7 @@ export default class Counter extends React.Component<CounterProps, CounterState>
         return (
             <div>
                 <div>Count: {this.state.count}</div>
-                <div>
+                <div className="btn-container">
                     <button onClick={() => this.changeBy(1)}>+</button>
                     <button onClick={() => this.changeBy(-1)}>-</button>
                 </div>

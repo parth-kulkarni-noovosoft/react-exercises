@@ -24,7 +24,7 @@ type TestCaseProps = {
 }
 class TestCase extends React.Component<TestCaseProps> {
     render(): React.ReactNode {
-        return <div className="test-case">
+        return <div className="box">
             <div><strong>{this.props.title}</strong></div>
             <div>Prop: {'' + this.props.prop}</div>
             {this.props.children}

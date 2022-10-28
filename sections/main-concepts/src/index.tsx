@@ -12,6 +12,7 @@ const Playground = ({ children }: { children?: JSX.Element }) => {
 }
 
 const Main = () => {
+    // store indexes instead of components directly
     const [component, setCurrentComponent] = useState<ReactElement>();
     const changeTo = (index: number) => {
         setCurrentComponent(COMPONENTS[index]);

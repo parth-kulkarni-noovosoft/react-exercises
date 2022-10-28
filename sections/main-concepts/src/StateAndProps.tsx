@@ -38,6 +38,7 @@ class Clock extends React.Component<ClockProps, ClockState> {
 }
 
 const App = () => {
+    // keep numbers in state rather than new components
     const [clocks, setClocks] = useState<ReactNode[]>([]);
     const [tickID, setTickID] = useState<Nullable<number>>();
 

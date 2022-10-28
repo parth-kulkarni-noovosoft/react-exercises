@@ -10,7 +10,7 @@ type SquareProps = {
   onClick: () => void;
 };
 
-class Square extends React.Component<SquareProps, unknown> {
+class Square extends React.Component<SquareProps> {
   render() {
     return (
       <button
@@ -28,7 +28,7 @@ type BoardProps = {
   onClick: (n: number) => void;
 }
 
-class Board extends React.Component<BoardProps, unknown> {
+class Board extends React.Component<BoardProps> {
   renderSquare(i: number) {
     return <Square
       key={i}

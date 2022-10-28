@@ -25,7 +25,7 @@
   width: fit-content;  
 }
 
-.test-case {
+.box {
   padding: 5px 10px;
   border: 1px solid black;
   border-radius: 4px;
@@ -34,4 +34,17 @@
 
 .m-2 {
   margin: 20px;
+}
+
+.btn-container {
+  padding: 10px;
+}
+
+.btn-container button {
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
+
+.btn-container button:nth-child(1) {
+  margin-left: 0;
 }
