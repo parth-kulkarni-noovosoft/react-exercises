@@ -6,7 +6,7 @@ import { ThemeContext } from "../themeContext";
 interface IAutoCounterProps {
     isEnabled: boolean;
 }
-const AutoCounterWithFunction: React.FC<IAutoCounterProps> = ({ isEnabled }) => {
+const AutoCounterWithHooks: React.FC<IAutoCounterProps> = ({ isEnabled }) => {
     const [count, setCount] = useState(0);
     let tickID = -1;
 
@@ -22,28 +22,7 @@ const AutoCounterWithFunction: React.FC<IAutoCounterProps> = ({ isEnabled }) => 
 
     return (
         <div className="box">
-            <strong>Auto Counter with useState function</strong> - {isEnabled ? 'Enabled' : 'Disabled'} - {count}
-        </div>
-    )
-}
-
-const AutoCounterWithoutFunction: React.FC<IAutoCounterProps> = ({ isEnabled }) => {
-    const [count, setCount] = useState(0);
-    let tickID = -1;
-
-    const incrementCounter = () => setCount(val => val + 1);
-
-    useEffect(() => {
-        if (!isEnabled) return;
-
-        tickID = +setInterval(incrementCounter, 1000);        
-        console.log(tickID);
-        return () => clearInterval(tickID);
-    }, [isEnabled]);
-
-    return (
-        <div className="box">
-            <strong>Auto Counter without useState function</strong> - {isEnabled ? 'Enabled' : 'Disabled'} - {count}
+            <strong>Auto Counter with hooks defined in component</strong> - {isEnabled ? 'Enabled' : 'Disabled'} - {count}
         </div>
     )
 }
@@ -86,8 +65,7 @@ const HooksDemo: React.FC = () => {
             toggleEnable();
         }}>{isEnabled ? 'Disable' : 'Enable'}</button>
 
-        <AutoCounterWithoutFunction isEnabled={isEnabled} />
-        <AutoCounterWithFunction isEnabled={isEnabled} />
+        <AutoCounterWithHooks isEnabled={isEnabled} />
         <AutoCounterWithCustomHook isEnabled={isEnabled} />
 
         <button
