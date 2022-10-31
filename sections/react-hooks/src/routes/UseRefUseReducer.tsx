@@ -1,4 +1,4 @@
-import { Reducer, useEffect, useReducer, useRef } from "react";
+import React, { Reducer, useEffect, useReducer, useRef } from "react";
 
 enum Actions {
     UP = 'up',
@@ -18,22 +18,22 @@ const positionReducer: Reducer<IPosition, Actions> = (state, action) => {
         case Actions.DOWN:
             return {
                 ...state,
-                y: state.y + 10
+                y: state.y + 10 >= 480 ? 0 : state.y + 10
             }
         case Actions.UP:
             return {
                 ...state,
-                y: state.y - 10
+                y: state.y - 10 <= 0 ? 470 : state.y - 10
             }
         case Actions.LEFT:
             return {
                 ...state,
-                x: state.x - 10
+                x: state.x - 10 <= 0 ? 630 : state.x - 10
             }
         case Actions.RIGHT:
             return {
                 ...state,
-                x: state.x + 10
+                x: state.x + 10 >= 640 ? 0 : state.x + 10
             }
         case Actions.RESET:
             return {
@@ -47,7 +47,7 @@ const positionReducer: Reducer<IPosition, Actions> = (state, action) => {
 
 const UseRefUseReducer: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const [state, dispatch] = useReducer(positionReducer, { x: 30, y: 30 })
+    const [state, dispatch] = useReducer(positionReducer, { x: 320, y: 240 })
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -71,8 +71,8 @@ const UseRefUseReducer: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [])
 
-    return <div>
-        <canvas ref={canvasRef} className='box'></canvas>
+    return <div className="use-ref-main">
+        <canvas ref={canvasRef} className='box' width={640} height={480}></canvas>
         <div className="box">Up down right left to move the rectangular box</div>
         <div className="box">
             <button onClick={() => dispatch(Actions.RESET)}>Reset Position</button>
