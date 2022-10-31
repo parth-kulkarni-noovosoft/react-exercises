@@ -41,3 +41,16 @@ button {
   color: #000;
 }
 
+.box {
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.box a {
+  display: block;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}

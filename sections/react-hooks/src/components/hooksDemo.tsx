@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "./themeContext";
+import { ThemeContext } from "../themeContext";
 
 // Demo for useState, useContext, useEffect and Custom Hook
 
@@ -57,7 +57,7 @@ const useCounter = (isEnabled: boolean) => {
     useEffect(() => {
         if (!isEnabled) return;
 
-        tickID = +setInterval(incrementCounter, 1000);        
+        tickID = setInterval(incrementCounter, 1000);        
         return () => clearInterval(tickID);
     }, [isEnabled]);
     return count;
