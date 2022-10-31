@@ -72,8 +72,8 @@ const AutoCounterWithCustomHook: React.FC<IAutoCounterProps> = ({ isEnabled }) =
     )
 }
 
-const HooksDemo: React.FC<{ switchTheme: () => void }> = ({ switchTheme }) => {
-    const theme = useContext(ThemeContext);
+const HooksDemo: React.FC = () => {
+    const { theme, toggle } = useContext(ThemeContext);
     const [isEnabled, setIsEnabled] = useState(false); 
 
     const toggleEnable = () => {
@@ -91,7 +91,7 @@ const HooksDemo: React.FC<{ switchTheme: () => void }> = ({ switchTheme }) => {
         <AutoCounterWithCustomHook isEnabled={isEnabled} />
 
         <button
-            onClick={switchTheme}
+            onClick={toggle}
         >Toggle Theme</button>
 
     </div>

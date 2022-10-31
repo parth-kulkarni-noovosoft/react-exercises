@@ -7,6 +7,7 @@ import {
   RouterProvider
 } from 'react-router-dom';
 import UseMemoDemo from './routes/UseMemoDemo';
+import UseRefUseReducer from './routes/UseRefUseReducer';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     element: <div className='box'>
       <a className='box' href="/main-demo">Main Demo</a>
       <a className='box' href="/use-memo-demo">Use Memo Demo</a>
+      <a className='box' href="/use-ref-use-reducer-demo">Use Ref Use Reducer Demo</a>
     </div>
   },
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/use-memo-demo',
     element: <UseMemoDemo />
+  },
+  {
+    path: '/use-ref-use-reducer-demo',
+    element: <UseRefUseReducer />
   }
 ])
 

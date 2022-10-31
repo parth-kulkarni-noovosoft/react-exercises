@@ -5,4 +5,7 @@ export enum themes {
     DARK = 'dark'
 }
 
-export const ThemeContext = React.createContext(themes.LIGHT);
+export const ThemeContext = React.createContext({
+    theme: themes.LIGHT,
+    toggle: () => {} 
+});
