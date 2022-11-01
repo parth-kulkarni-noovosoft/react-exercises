@@ -2,7 +2,8 @@ import React, { ChangeEventHandler, useContext, useState } from "react";
 import { Currency, LocaleContext, Locale } from "./localeContext";
 
 const formatterFactory = (currency: Currency, locale: Locale) => {
-    return new Intl.NumberFormat(locale, { style: 'currency', currency });
+    const { format } = new Intl.NumberFormat(locale, { style: 'currency', currency });
+    return format;
 }
 
 interface ILocaleCurrencyProps {
@@ -11,8 +12,8 @@ interface ILocaleCurrencyProps {
 
 const ContextViaUseContext: React.FC<ILocaleCurrencyProps> = ({ amount }) => {
     const { currency, locale } = useContext(LocaleContext);
-    const formatter = formatterFactory(currency, locale);
-    return <div className="box">Context Via Use Context: <strong>{formatter.format(amount)}</strong></div>
+    const format = formatterFactory(currency, locale);
+    return <div className="box">Context Via Use Context: <strong>{format(amount)}</strong></div>
 }
 
 class ContextViaClass extends React.Component<ILocaleCurrencyProps> {
@@ -21,8 +22,8 @@ class ContextViaClass extends React.Component<ILocaleCurrencyProps> {
 
     render() {
         const { currency, locale } = this.context;
-        const formatter = formatterFactory(currency, locale);
-        return <div className="box">Context Via Class: <strong>{formatter.format(this.props.amount)}</strong></div>
+        const format = formatterFactory(currency, locale);
+        return <div className="box">Context Via Class: <strong>{format(this.props.amount)}</strong></div>
     }
 }
 
@@ -30,10 +31,10 @@ const ContextViaConsumer: React.FC<ILocaleCurrencyProps> = ({ amount }) => {
     return (
         <LocaleContext.Consumer>
             {({ currency, locale }) => {
-                const formatter = formatterFactory(currency, locale);
+                const format = formatterFactory(currency, locale);
                 return (
                     <div className="box">
-                        Context via consumer: <strong>{formatter.format(amount)}</strong>
+                        Context via consumer: <strong>{format(amount)}</strong>
                     </div>
                 )
             }}
