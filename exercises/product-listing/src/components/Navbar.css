@@ -1,0 +1,18 @@
+.input-container {
+    height: 3rem;
+    display: flex;
+
+    font-size: 2rem;
+}
+
+.input-container .query {
+    width: 60%;
+    height: 100%;
+
+    font-size: inherit;
+}
+
+.input-container .category {
+    flex-grow: 1;
+    font-size: inherit;
+}
