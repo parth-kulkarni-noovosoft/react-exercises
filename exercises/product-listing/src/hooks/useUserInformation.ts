@@ -13,12 +13,8 @@ const useUserInformation = () => {
 
     useEffect(() => {
         const getUserInfo = async () => {
-            const userInfo: IUserInfo = await (await fetch(`https://dummyjson.com/users/${userID}`)).json()
-            setUserInfo({
-                id: userInfo.id,
-                firstName: userInfo.firstName,
-                lastName: userInfo.lastName
-            })
+            const userInfo: IUserInfo = await (await fetch(`https://dummyjson.com/users/${userID}?select=id,firstName,lastName`)).json()
+            setUserInfo(userInfo)
         }
 
         getUserInfo();

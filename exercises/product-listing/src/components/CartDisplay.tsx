@@ -1,7 +1,7 @@
 import { IProductInfo } from "../typings";
 import ItemInfo from "./ItemInfo";
 import useUserInformation from "../hooks/useUserInformation";
-
+import { memo } from "react";
 import './CartDisplay.css'
 
 interface ICartDisplayProps {
@@ -24,4 +24,4 @@ const CartDisplay: React.FC<ICartDisplayProps> = ({ items, removeFromCart }) => 
     </div>
 }
 
-export default CartDisplay;
+export default memo(CartDisplay);

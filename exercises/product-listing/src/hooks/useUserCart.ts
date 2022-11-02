@@ -79,7 +79,7 @@ const useUserCart = (userID: number) => {
     }, [cartID, userID])
 
     return useMemo(() => ({
-        getItems: () => cartProducts,
+        getItemsID: () => cartProducts,
 
         addItem: async (itemID: number) => {
             const existingProducts = [];

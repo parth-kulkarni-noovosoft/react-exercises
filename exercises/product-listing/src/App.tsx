@@ -17,7 +17,7 @@ const App: React.FC = () => {
 
   const items = useSearchQuery(properties.query, properties.category);
   const cart = useUserCart(properties.userID);
-  const cartItemsArray = useItems(cart.getItems());
+  const cartItemsArray = useItems(cart.getItemsID());
 
   return (
     <UserContext.Provider value={properties.userID}>
@@ -31,7 +31,7 @@ const App: React.FC = () => {
           items={items}
           addItemToCart={cart.addItem}
           removeFromCart={cart.removeItem}
-          cart={cart.getItems()}
+          cart={cart.getItemsID()}
         />
         <CartDisplay
           items={cartItemsArray}

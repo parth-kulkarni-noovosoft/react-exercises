@@ -23,10 +23,14 @@ const ItemInfo: React.FC<IItemInfoProps> = ({ item, addItemToCart, isAddedToCart
         </div>
         <div className="cta-container bordered">
             <span className="details__rating">Rating {item.rating}</span>
-            {isAddedToCart 
-                ? <button onClick={() => removeFromCart()}>Remove from cart</button> 
-                : <button onClick={() => addItemToCart()}>Add To Cart</button>
-            }
+            <button
+                onClick={() => {
+                    isAddedToCart ? removeFromCart() : addItemToCart()
+                }}
+                className={`btn ${isAddedToCart ? 'remove-btn' : 'add-btn'}`}
+            >
+                {isAddedToCart ? 'Remove from Cart' : 'Add to Cart'}
+            </button>
         </div>
     </div>
 }
