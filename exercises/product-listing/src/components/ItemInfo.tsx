@@ -1,7 +1,14 @@
 import { IProductInfo } from "../typings";
 import './ItemInfo.css';
 
-const ItemInfo: React.FC<{ item: IProductInfo }> = ({ item }) => {
+interface IItemInfoProps {
+    item: IProductInfo;
+    addItemToCart: () => void;
+    removeFromCart: () => void;
+    isAddedToCart: boolean;
+}
+
+const ItemInfo: React.FC<IItemInfoProps> = ({ item, addItemToCart, isAddedToCart, removeFromCart }) => {
     const discountedPrice = ((item.price * (100 - item.discountPercentage))/100).toFixed(2); 
     
     return <div className="item-container">
@@ -16,7 +23,10 @@ const ItemInfo: React.FC<{ item: IProductInfo }> = ({ item }) => {
         </div>
         <div className="cta-container bordered">
             <span className="details__rating">Rating {item.rating}</span>
-            <button>Add To Cart</button>
+            {isAddedToCart 
+                ? <button onClick={() => removeFromCart()}>Remove from cart</button> 
+                : <button onClick={() => addItemToCart()}>Add To Cart</button>
+            }
         </div>
     </div>
 }

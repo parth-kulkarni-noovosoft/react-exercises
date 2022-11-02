@@ -13,9 +13,34 @@ export interface IProductInfo {
     images: string[];
 }
 
-export interface IProductsResponse {
-    products: IProductInfo[];
+type PaginatedResponse<T> = T & {
     total: number;
     skip: number;
     limit: number;
+}
+
+export type ProductsResponse = PaginatedResponse<{
+    products: IProductInfo[];
+}>
+
+export interface ICartInfo {
+    id: number;
+    products: IProductInfo[];
+    total: number;
+    discountedTotal: number;
+    userId: number;
+    totalProducts: number;
+    totalQuantity: number;
+}
+
+export type CartsResponse = PaginatedResponse<{
+    carts: ICartInfo[]
+}>
+
+export type Nullable<T> = T | null;
+
+export interface IPropertiesState {
+    query: string;
+    category: string;
+    userID: number
 }

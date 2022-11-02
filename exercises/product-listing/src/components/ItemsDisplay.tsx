@@ -1,18 +1,23 @@
-import { memo } from "react";
-import useItems from "../hooks/useItems";
+import { IProductInfo } from "../typings";
 import ItemInfo from "./ItemInfo";
 
 interface IItemsDisplayProps {
-    category: string;
-    query: string;
+    items: IProductInfo[]
+    addItemToCart: (id: number) => void
+    removeFromCart: (id: number) => void
+    cart: Set<number>
 }
 
-const ItemsDisplay: React.FC<IItemsDisplayProps> = ({ category, query }) => {
-    const items = useItems(query, category);
-
+const ItemsDisplay: React.FC<IItemsDisplayProps> = ({ addItemToCart, items, removeFromCart, cart }) => {
     return <div className="items-display-container">
-        {items.map(item => <ItemInfo key={item.id} item={item} />)}
+        {items.slice(0, 5).map(item => <ItemInfo 
+            key={item.id}
+            item={item}
+            addItemToCart={() => addItemToCart(item.id)}
+            removeFromCart={() => removeFromCart(item.id)}
+            isAddedToCart={cart.has(item.id)}
+        />)}
     </div>
 }
 
-export default memo(ItemsDisplay);
+export default ItemsDisplay;

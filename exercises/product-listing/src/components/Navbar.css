@@ -6,7 +6,7 @@
 }
 
 .input-container .query {
-    width: 60%;
+    width: 40%;
     height: 100%;
 
     font-size: inherit;
@@ -15,4 +15,20 @@
 .input-container .category {
     flex-grow: 1;
     font-size: inherit;
+}
+
+.status span {
+    display: block;
+    text-align: center;
+
+    font-size: 1.25rem;
+}
+
+.status {
+    flex-grow: 1;
+}
+
+.user-selection {
+    flex-grow: 0.5;
+    font-size: 1.25rem;
 }
