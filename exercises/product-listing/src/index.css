@@ -17,3 +17,20 @@
   text-decoration: none;
   color: black;
 }
+
+.button-section {
+  width: 100%;
+  font-size: 2rem;
+
+  display: flex;
+}
+
+.button-section .page-number {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.button-section button {
+  font-size: inherit;
+  flex-grow: 1;
+}

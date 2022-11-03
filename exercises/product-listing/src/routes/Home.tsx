@@ -19,10 +19,10 @@ const App: React.FC = () => {
       <Navbar
         properties={properties}
         dispatch={dispatch}
-        cartSize={cart.getItemsID().size}
+        cartSize={cart.getItemsID().length}
       />
       <ItemsDisplay
-        items={items}
+        products={items}
         addItemToCart={cart.addItem}
         removeFromCart={cart.removeItem}
         cart={cart.getItemsID()}

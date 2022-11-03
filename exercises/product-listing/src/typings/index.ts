@@ -49,3 +49,7 @@ export interface IUserInfo {
     firstName: string,
     lastName: string,
 }
+
+export type Timed<T> = T & {
+    timestamp: number;
+}

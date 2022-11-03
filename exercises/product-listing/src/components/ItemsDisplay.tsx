@@ -1,22 +1,29 @@
 import { IProductInfo } from "../typings";
 import ItemInfo from "./ItemInfo";
+import Paginator from "./Paginator";
 
 interface IItemsDisplayProps {
-    items: IProductInfo[]
+    products: IProductInfo[]
     addItemToCart: (id: number) => void
     removeFromCart: (id: number) => void
-    cart: Set<number>
+    cart: number[]
 }
 
-const ItemsDisplay: React.FC<IItemsDisplayProps> = ({ addItemToCart, items, removeFromCart, cart }) => {
+const ItemsDisplay: React.FC<IItemsDisplayProps> = ({ addItemToCart, products, removeFromCart, cart }) => {
     return <div className="items-display-container">
-        {items.slice(0, 5).map(item => <ItemInfo 
-            key={item.id}
-            item={item}
-            addItemToCart={() => addItemToCart(item.id)}
-            removeFromCart={() => removeFromCart(item.id)}
-            isAddedToCart={cart.has(item.id)}
-        />)}
+        <Paginator items={products}>
+            {items => <>{items.length === 0 ? <div>Query has no results</div> : null}
+                {items.map(item => <ItemInfo
+                    key={item.id}
+                    item={item}
+                    addItemToCart={() => addItemToCart(item.id)}
+                    removeFromCart={() => removeFromCart(item.id)}
+                    isAddedToCart={cart.includes(item.id)}
+                />)}
+            </>
+            }
+        </Paginator>
+
     </div>
 }
 

@@ -9,7 +9,7 @@ const Cart: React.FC = () => {
   return (
     <div className="container">
       <CartDisplay
-        items={cartItemsArray}
+        cartItems={cartItemsArray}
         removeFromCart={cart.removeItem}
       />
     </div>

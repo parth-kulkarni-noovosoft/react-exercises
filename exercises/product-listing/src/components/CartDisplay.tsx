@@ -4,13 +4,14 @@ import useUserInformation from "../hooks/useUserInformation";
 import { memo } from "react";
 import { Link } from 'react-router-dom';
 import './CartDisplay.css'
+import Paginator from "./Paginator";
 
 interface ICartDisplayProps {
-    items: IProductInfo[]
+    cartItems: IProductInfo[]
     removeFromCart: (id: number) => void
 }
 
-const CartDisplay: React.FC<ICartDisplayProps> = ({ items, removeFromCart }) => {
+const CartDisplay: React.FC<ICartDisplayProps> = ({ cartItems, removeFromCart }) => {
     const userInfo = useUserInformation();
 
     return <div className="items-display-container">
@@ -20,13 +21,20 @@ const CartDisplay: React.FC<ICartDisplayProps> = ({ items, removeFromCart }) => 
                 <span>Home</span>
             </Link>
         </div>
-        {items.map(item => <ItemInfo
-            key={item.id}
-            item={item}
-            addItemToCart={() => {}}
-            removeFromCart={() => removeFromCart(item.id)}
-            isAddedToCart={true}
-        />)}
+        <Paginator items={cartItems}>
+            {items => (
+                <>
+                    {items.length === 0 ? <div>No Items to display</div> : null}
+                    {items.map(item => <ItemInfo
+                        key={item.id}
+                        item={item}
+                        addItemToCart={() => { }}
+                        removeFromCart={() => removeFromCart(item.id)}
+                        isAddedToCart={true}
+                    />)}
+                </>
+            )}
+        </Paginator>
     </div>
 }
 

@@ -1,6 +1,7 @@
-import { useEffect, useState, useMemo, useCallback, useContext } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import UserContext from "../context/user";
-import { CartsResponse, ICartInfo, IProductInfo } from "../typings";
+import { CartsResponse, ICartInfo, Timed } from "../typings";
+import ms from "ms"
 
 interface IRequestPayload {
     userID: number;
@@ -9,6 +10,11 @@ interface IRequestPayload {
         id: number;
         qty?: number;
     }[]
+}
+
+interface ILocaleStorageData {
+    products: number[],
+    cartID: number
 }
 
 const generatePutItemsRequest = (cartID: number, products: IRequestPayload['products']): Request => {
@@ -34,35 +40,30 @@ const generateAddCartOrUpdateCartRequest = (payload: IRequestPayload): Request =
     return generatePutItemsRequest(payload.cartID, payload.products)
 }
 
-const convertProductArrayToSet = (products: Pick<IProductInfo, 'id'>[]) => {
-    return new Set<number>(products.map(product => product.id));
-}
-
 const generateGetCartRequest = (userID: number) => {
     return new Request(`https://dummyjson.com/carts/user/${userID}`);
 }
-
-const useUserCart = () => {
-    const [cartProducts, setCartProducts] = useState<Set<number>>(new Set());
-    const [cartID, setCartID] = useState<number>(0);
-    const { userID } = useContext(UserContext);
-
-    useEffect(() => {
-        const getInitialItems = async () => {
-            const cartsInfo: CartsResponse = await (await fetch(generateGetCartRequest(userID))).json();
-            setCartProducts(convertProductArrayToSet(cartsInfo.carts?.[0]?.products ?? []));
-            if (cartsInfo.carts[0]) {
-                setCartID(cartsInfo.carts[0].id);
-            }
+const saveDataToLocalStorageFactory = (localStorageKey: string) =>
+    (data: Partial<ILocaleStorageData>) => {
+        const localDataString = localStorage.getItem(localStorageKey)
+        let previousData: Record<string, unknown> = {};
+        if (localDataString) {
+            previousData = JSON.parse(localDataString);
         }
 
-        getInitialItems();
-    }, [userID])
+        localStorage.setItem(localStorageKey, JSON.stringify({
+            ...previousData,
+            ...data,
+            timestamp: Date.now()
+        }))
 
-    const updateCartAndRequest = useCallback(async (products: IRequestPayload['products'], save = true) => {
+    };
+
+const updateCartAndRequestFactory = (cartID: number, userID: number) =>
+    async (products: number[], cb: (data: ICartInfo) => void) => {
         const apiURL = generateAddCartOrUpdateCartRequest({
             cartID,
-            products,
+            products: products.map(id => ({ id })),
             userID
         })
         let cartData: ICartInfo;
@@ -72,42 +73,78 @@ const useUserCart = () => {
             console.error(err);
             return;
         }
-        if (save) {
-            setCartProducts(convertProductArrayToSet(cartData.products));
-            if (cartID === 0) {
-                setCartID(cartData.id);
-            }    
+        cb(cartData);
+    }
+
+const useUserCart = () => {
+    const [cartProducts, setCartProducts] = useState<number[]>([]);
+    const [cartID, setCartID] = useState<number>(0);
+    const { userID } = useContext(UserContext);
+    const localStorageKey = `cart-data-${userID}`;
+
+    const saveDataToLocaleStorage = useMemo(
+        () => saveDataToLocalStorageFactory(localStorageKey),
+        [userID]
+    );
+
+    const updateCartAndRequest = useMemo(
+        () => updateCartAndRequestFactory(cartID, userID),
+        [cartID, userID]
+    )
+
+    useEffect(() => {
+        const getInitialItems = async () => {
+
+            const item = localStorage.getItem(localStorageKey)
+            if (item) {
+                let parsedDocument: Timed<ILocaleStorageData>;
+                parsedDocument = JSON.parse(item);
+
+                if (Date.now() - parsedDocument.timestamp < ms('1h')) {
+                    const { timestamp, ...rest } = parsedDocument;
+                    setCartProducts(rest.products);
+                    setCartID(rest.cartID ?? 0);
+                    return;
+                }
+            }
+
+            const cartResponse: CartsResponse = await (await fetch(generateGetCartRequest(userID))).json();
+            const products = (cartResponse.carts?.[0]?.products ?? []).map(product => product.id)
+            setCartProducts(products);
+
+            setCartID(cartResponse.carts?.[0]?.id ?? 0);
+            saveDataToLocaleStorage({ products, cartID: cartResponse.carts?.[0]?.id ?? 0 });
+            return;
         }
-    }, [cartID, userID])
+
+        getInitialItems();
+    }, [userID])
+
 
     return useMemo(() => ({
         getItemsID: () => cartProducts,
 
         addItem: async (itemID: number) => {
-            const existingProducts = [];
-            for (const key of cartProducts.keys()) {
-                existingProducts.push({ id: key });
-            }
-            
-            const newCartList = [
-                ...existingProducts,
-                { id: itemID }
-            ];
+            const newCartList = cartProducts
+                .concat(itemID)
 
-            updateCartAndRequest(newCartList, false);
-            setCartProducts(convertProductArrayToSet(newCartList));
+            updateCartAndRequest(newCartList, (cartData) => {
+                setCartProducts(newCartList);
+                if (cartID === 0) {
+                    setCartID(cartData.id);
+                }
+                saveDataToLocaleStorage({ products: newCartList });
 
+            });
         },
 
         removeItem: async (itemID: number) => {
-            const existingProducts = [];
-            for (const key of cartProducts.keys()) {
-                if (key === itemID) continue;
-                existingProducts.push({ id: key });
-            }
+            const remainingProductList = cartProducts.filter(id => id !== itemID)
 
-            updateCartAndRequest(existingProducts, false);
-            setCartProducts(convertProductArrayToSet(existingProducts));
+            updateCartAndRequest(remainingProductList, () => {
+                setCartProducts(remainingProductList);
+                saveDataToLocaleStorage({ products: remainingProductList });
+            });
         }
     }), [cartProducts])
 }
