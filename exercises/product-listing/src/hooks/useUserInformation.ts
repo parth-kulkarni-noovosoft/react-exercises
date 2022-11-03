@@ -3,7 +3,7 @@ import UserContext from "../context/user";
 import { IUserInfo } from "../typings";
 
 const useUserInformation = () => {
-    const userID = useContext(UserContext);
+    const { userID } = useContext(UserContext);
     const [userInfo, setUserInfo] = useState<IUserInfo | null>(null);
 
     useEffect(() => {

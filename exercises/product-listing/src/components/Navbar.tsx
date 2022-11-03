@@ -1,4 +1,5 @@
-import { useMemo } from "react"
+import { useContext, useMemo } from "react"
+import UserContext from "../context/user";
 import useAllUserNames from "../hooks/useAllUserNames";
 import useCategories from "../hooks/useCategories";
 import useUserInformation from "../hooks/useUserInformation";
@@ -19,8 +20,9 @@ const Navbar: React.FC<INavbarProps> = ({
 }) => {
     const categories = useCategories();
     const userInfo = useUserInformation();
-
     const allUserNames = useAllUserNames();
+
+    const { userID, changeUser } = useContext(UserContext);
 
     const userNameOptionsArray = useMemo(() =>
             allUserNames
@@ -57,8 +59,8 @@ const Navbar: React.FC<INavbarProps> = ({
                 className="user-selection"
                 name="user"
                 id="user"
-                onChange={(e) => dispatch({ type: PropertyChangeEvents.USERID, payload: +e.target.value })}
-                value={properties.userID}
+                onChange={(e) => changeUser(+e.target.value)}
+                value={userID}
             >
                 {userNameOptionsArray}
             </select>

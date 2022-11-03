@@ -1,4 +1,5 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useContext } from "react";
+import UserContext from "../context/user";
 import { CartsResponse, ICartInfo, IProductInfo } from "../typings";
 
 interface IRequestPayload {
@@ -41,9 +42,10 @@ const generateGetCartRequest = (userID: number) => {
     return new Request(`https://dummyjson.com/carts/user/${userID}`);
 }
 
-const useUserCart = (userID: number) => {
+const useUserCart = () => {
     const [cartProducts, setCartProducts] = useState<Set<number>>(new Set());
     const [cartID, setCartID] = useState<number>(0);
+    const { userID } = useContext(UserContext);
 
     useEffect(() => {
         const getInitialItems = async () => {

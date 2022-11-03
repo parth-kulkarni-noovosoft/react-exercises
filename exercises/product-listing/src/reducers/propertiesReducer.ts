@@ -4,15 +4,11 @@ import { IPropertiesState } from "../typings";
 export enum PropertyChangeEvents {
     QUERY = 'query',
     CATEGORY = 'category',
-    USERID = 'userID'
 }
 
 export type PropertiesReducerAction = {
-    type: PropertyChangeEvents.CATEGORY | PropertyChangeEvents.QUERY;
+    type: PropertyChangeEvents;
     payload: string
-} | {
-    type: PropertyChangeEvents.USERID;
-    payload: number
 }
 
 const propertiesReducer: Reducer<IPropertiesState, PropertiesReducerAction> = (state, action) => {
