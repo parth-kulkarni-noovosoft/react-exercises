@@ -1,11 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import UserContext from "../context/user";
-
-interface IUserInfo {
-    id: number,
-    firstName: string,
-    lastName: string,
-}
+import { IUserInfo } from "../typings";
 
 const useUserInformation = () => {
     const userID = useContext(UserContext);

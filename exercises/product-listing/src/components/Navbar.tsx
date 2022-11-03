@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import useAllUserNames from "../hooks/useAllUserNames";
 import useCategories from "../hooks/useCategories";
 import useUserInformation from "../hooks/useUserInformation";
 import { PropertiesReducerAction, PropertyChangeEvents } from "../reducers/propertiesReducer";
@@ -19,12 +20,12 @@ const Navbar: React.FC<INavbarProps> = ({
     const categories = useCategories();
     const userInfo = useUserInformation();
 
-    const userIdOptionArray = useMemo(
-        () => new Array(100)
-            .fill(null)
-            .map((_, i) => <option value={i + 1} key={i + 1}>{i + 1}</option>),
-        []);
+    const allUserNames = useAllUserNames();
 
+    const userNameOptionsArray = useMemo(() =>
+            allUserNames
+            .map((userInfo) => <option value={userInfo.id} key={userInfo.id}>{userInfo.firstName}</option>),
+        [allUserNames]);
 
     return (
         <div className="input-container">
@@ -57,9 +58,9 @@ const Navbar: React.FC<INavbarProps> = ({
                 name="user"
                 id="user"
                 onChange={(e) => dispatch({ type: PropertyChangeEvents.USERID, payload: +e.target.value })}
-                value={properties.userID.toString()}
+                value={properties.userID}
             >
-                {userIdOptionArray}
+                {userNameOptionsArray}
             </select>
         </div>
     )

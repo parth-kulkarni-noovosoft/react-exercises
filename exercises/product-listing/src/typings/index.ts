@@ -13,7 +13,7 @@ export interface IProductInfo {
     images: string[];
 }
 
-type PaginatedResponse<T> = T & {
+export type PaginatedResponse<T> = T & {
     total: number;
     skip: number;
     limit: number;
@@ -43,4 +43,10 @@ export interface IPropertiesState {
     query: string;
     category: string;
     userID: number
+}
+
+export interface IUserInfo {
+    id: number,
+    firstName: string,
+    lastName: string,
 }
