@@ -5,6 +5,7 @@ import useCategories from "../hooks/useCategories";
 import useUserInformation from "../hooks/useUserInformation";
 import { PropertiesReducerAction, PropertyChangeEvents } from "../reducers/propertiesReducer";
 import { IPropertiesState } from "../typings";
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 interface INavbarProps {
@@ -52,8 +53,10 @@ const Navbar: React.FC<INavbarProps> = ({
                 })}
             </select>
             <div className="status bordered">
-                <span>{userInfo?.firstName ?? 'default'}'s Cart</span>
-                <span>{cartSize} Item{cartSize > 1 ? 's' : ''}</span>
+                <Link to='/cart' className='link'>
+                    <span>{userInfo?.firstName ?? 'default'}'s Cart</span>
+                    <span>{cartSize} Item{cartSize > 1 ? 's' : ''}</span>
+                </Link>
             </div>
             <select
                 className="user-selection"

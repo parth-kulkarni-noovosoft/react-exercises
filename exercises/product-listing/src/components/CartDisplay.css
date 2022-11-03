@@ -1,3 +1,13 @@
-.cart-title {
+.title-container {
+    display: flex;
+    width: 100%;
     font-size: 2rem;
+}
+
+.cart-title {
+    width: 80%;
+}
+
+.title-container .link {
+    flex-grow: 1;
 }

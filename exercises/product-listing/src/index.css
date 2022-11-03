@@ -12,3 +12,8 @@
   width: 90vw;
   margin: 0 auto;
 }
+
+.link {
+  text-decoration: none;
+  color: black;
+}

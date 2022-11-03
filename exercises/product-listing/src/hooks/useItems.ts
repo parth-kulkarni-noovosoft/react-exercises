@@ -7,10 +7,10 @@ const useItems = (itemIDs: Set<number>) => {
     useEffect(() => {
         const getItems = async () => {
             const itemInformation = await Promise.all([...itemIDs].map(async itemID => {
-                return await (await fetch(`https://dummyjson.com/products/${itemID}`)).json();
+                return await (await fetch(`https://dummyjson.com/products/${itemID}`, { cache: 'force-cache' })).json();
             }))
             setItems(itemInformation);
-        } 
+        }
         getItems()
     }, [itemIDs]);
     return items;
