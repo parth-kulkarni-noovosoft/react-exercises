@@ -54,7 +54,7 @@ const Navbar: React.FC<INavbarProps> = ({
             </select>
             <div className="status bordered">
                 <Link to='/cart' className='link'>
-                    <span>{userInfo?.firstName ?? 'default'}'s Cart</span>
+                    <span>{userInfo?.firstName ?? 'default'}&apos;s Cart</span>
                     <span>{cartSize} Item{cartSize > 1 ? 's' : ''}</span>
                 </Link>
             </div>

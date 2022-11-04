@@ -16,7 +16,7 @@ const CartDisplay: React.FC<ICartDisplayProps> = ({ cartItems, removeFromCart })
 
     return <div className="items-display-container">
         <div className="title-container">
-            <span className="cart-title bordered">{userInfo?.firstName ?? 'default'}'s Cart</span>
+            <span className="cart-title bordered">{userInfo?.firstName ?? 'default'}&apos;s Cart</span>
             <Link to='/' className='link bordered'>
                 <span>Home</span>
             </Link>
@@ -28,7 +28,7 @@ const CartDisplay: React.FC<ICartDisplayProps> = ({ cartItems, removeFromCart })
                     {items.map(item => <ItemInfo
                         key={item.id}
                         item={item}
-                        addItemToCart={() => { }}
+                        addItemToCart={() => { /* does nothing */ }}
                         removeFromCart={() => removeFromCart(item.id)}
                         isAddedToCart={true}
                     />)}

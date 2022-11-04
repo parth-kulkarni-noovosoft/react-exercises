@@ -97,11 +97,10 @@ const useUserCart = () => {
 
             const item = localStorage.getItem(localStorageKey)
             if (item) {
-                let parsedDocument: Timed<ILocaleStorageData>;
-                parsedDocument = JSON.parse(item);
+                const parsedDocument: Timed<ILocaleStorageData> = JSON.parse(item);
 
                 if (Date.now() - parsedDocument.timestamp < ms('1h')) {
-                    const { timestamp, ...rest } = parsedDocument;
+                    const { timestamp: _timestamp, ...rest } = parsedDocument;
                     setCartProducts(rest.products);
                     setCartID(rest.cartID ?? 0);
                     return;

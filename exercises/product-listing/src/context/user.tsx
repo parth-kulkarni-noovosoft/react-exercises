@@ -5,7 +5,9 @@ const UserContext = React.createContext<{
     changeUser: (id: number) => void
 }>({
     userID: 5,
-    changeUser() {}
+    changeUser() {
+        // defined as default value, does nothing
+    }
 });
 
 
