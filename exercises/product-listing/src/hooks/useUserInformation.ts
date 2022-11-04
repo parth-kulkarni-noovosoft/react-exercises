@@ -12,7 +12,7 @@ const useUserInformation = () => {
             setUserInfo(userInfo)
         }
 
-        getUserInfo();
+        getUserInfo().catch(e => console.error(e));
     }, [userID])
 
     return userInfo;

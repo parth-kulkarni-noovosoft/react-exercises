@@ -1,7 +1,7 @@
 import { IProductInfo } from "../typings";
 import ItemInfo from "./ItemInfo";
 import useUserInformation from "../hooks/useUserInformation";
-import { memo } from "react";
+import React, { memo } from "react";
 import { Link } from 'react-router-dom';
 import './CartDisplay.css'
 import Paginator from "./Paginator";

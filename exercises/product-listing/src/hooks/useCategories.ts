@@ -9,7 +9,7 @@ export default () => {
             const jsonData: string[] = await rawData.json();
             setCategories(['All', ...jsonData]);
         };
-        getCategories();
+        getCategories().catch(e => console.error(e));
     }, [])
 
     return categories;

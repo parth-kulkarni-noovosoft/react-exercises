@@ -1,3 +1,4 @@
+import React from "react";
 import { IProductInfo } from "../typings";
 import ItemInfo from "./ItemInfo";
 import Paginator from "./Paginator";

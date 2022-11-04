@@ -11,7 +11,7 @@ const useItems = (itemIDs: number[]) => {
             }))
             setItems(itemInformation);
         }
-        getItems()
+        getItems().catch(e => console.error(e))
     }, [itemIDs]);
     return items;
 }

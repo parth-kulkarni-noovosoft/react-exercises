@@ -15,7 +15,7 @@ export default (query: string, category: string) => {
             setItems(itemData.products.filter(filterFunction));
         }
 
-        getItems();
+        getItems().catch(e => console.error(e));
     }, [category, query])
     return items;
 }

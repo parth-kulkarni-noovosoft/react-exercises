@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import React, { useReducer } from "react";
 import ItemsDisplay from "../components/ItemsDisplay";
 import Navbar from "../components/Navbar";
 import useSearchQuery from "../hooks/useSearchQuery";

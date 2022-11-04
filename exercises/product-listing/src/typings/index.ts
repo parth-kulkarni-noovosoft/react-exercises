@@ -37,8 +37,6 @@ export type CartsResponse = PaginatedResponse<{
     carts: ICartInfo[]
 }>
 
-export type Nullable<T> = T | null;
-
 export interface IPropertiesState {
     query: string;
     category: string;

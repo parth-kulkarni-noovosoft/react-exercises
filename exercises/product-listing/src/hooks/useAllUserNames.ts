@@ -13,7 +13,7 @@ const useAllUserNames = () => {
                 ).json();
             setUserNames(allUserFirstNames.users);
         }
-        getAllUserNames();
+        getAllUserNames().catch(e => console.error(e));
     }, [])
 
     return userNames;

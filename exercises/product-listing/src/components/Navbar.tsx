@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react"
+import React, { useContext, useMemo } from "react"
 import UserContext from "../context/user";
 import useAllUserNames from "../hooks/useAllUserNames";
 import useCategories from "../hooks/useCategories";

@@ -117,7 +117,7 @@ const useUserCart = () => {
             return;
         }
 
-        getInitialItems();
+        getInitialItems().catch(e => console.error(e));
     }, [userID])
 
 
@@ -128,7 +128,7 @@ const useUserCart = () => {
             const newCartList = cartProducts
                 .concat(itemID)
 
-            updateCartAndRequest(newCartList, (cartData) => {
+            await updateCartAndRequest(newCartList, (cartData) => {
                 setCartProducts(newCartList);
                 if (cartID === 0) {
                     setCartID(cartData.id);
@@ -141,7 +141,7 @@ const useUserCart = () => {
         removeItem: async (itemID: number) => {
             const remainingProductList = cartProducts.filter(id => id !== itemID)
 
-            updateCartAndRequest(remainingProductList, () => {
+            await updateCartAndRequest(remainingProductList, () => {
                 setCartProducts(remainingProductList);
                 saveDataToLocaleStorage({ products: remainingProductList });
             });
