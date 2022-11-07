@@ -1,11 +1,11 @@
 import React, { useContext, useMemo } from "react"
-import UserContext from "../context/user";
-import useAllUserNames from "../hooks/useAllUserNames";
-import useCategories from "../hooks/useCategories";
-import useUserInformation from "../hooks/useUserInformation";
-import { PropertiesReducerAction, PropertyChangeEvents } from "../reducers/propertiesReducer";
-import { IPropertiesState } from "../typings";
+import UserContext from "../../context/user";
+import { PropertiesReducerAction, PropertyChangeEvents } from "../../reducers/propertiesReducer";
+import { IPropertiesState, IUserInfo, PaginatedResponse } from "../../types";
 import { Link } from 'react-router-dom';
+import useFetch from "../../hooks/useFetch";
+import { API_URL } from "../../constants";
+
 import './Navbar.css';
 
 interface INavbarProps {
@@ -19,15 +19,20 @@ const Navbar: React.FC<INavbarProps> = ({
     properties,
     dispatch
 }) => {
-    const categories = useCategories();
-    const userInfo = useUserInformation();
-    const allUserNames = useAllUserNames();
+    const categories = useFetch<string[]>(`${API_URL}/products/categories`) ?? [];
+    const { userInfo } = useContext(UserContext);
+    const allUserNames = useFetch<PaginatedResponse<{
+        users: IUserInfo[]
+    }>>(`${API_URL}/users?limit=100&select=firstName`);
 
     const { userID, changeUser } = useContext(UserContext);
 
-    const userNameOptionsArray = useMemo(() =>
-            allUserNames
-            .map((userInfo) => <option value={userInfo.id} key={userInfo.id}>{userInfo.firstName}</option>),
+    const userNameOptionsArray = useMemo(
+        () => allUserNames?.users?.map(
+            (userInfo) => (<option value={userInfo.id} key={userInfo.id}>
+                {userInfo.firstName}
+            </option>)
+        ),
         [allUserNames]);
 
     return (
@@ -48,14 +53,14 @@ const Navbar: React.FC<INavbarProps> = ({
                 onChange={(e) => dispatch({ type: PropertyChangeEvents.CATEGORY, payload: e.target.value })}
                 value={properties.category}
             >
-                {categories.map((category, idx) => {
+                {['All', ...categories,].map((category, idx) => {
                     return <option value={category} key={`${category}${idx}`}>{category}</option>
                 })}
             </select>
             <div className="status bordered">
                 <Link to='/cart' className='link'>
                     <span>{userInfo?.firstName ?? 'default'}&apos;s Cart</span>
-                    <span>{cartSize} Item{cartSize > 1 ? 's' : ''}</span>
+                    <span>{cartSize} Product{cartSize > 1 ? 's' : ''}</span>
                 </Link>
             </div>
             <select

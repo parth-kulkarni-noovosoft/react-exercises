@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const Paginator = <T,>({ items, children }: {
-    items: T[],
-    children: (items: T[]) => React.ReactNode
+const Paginator = <T,>({ elements, children }: {
+    elements: T[],
+    children: (elements: T[]) => React.ReactNode
 }) => {
     const [pageNumber, setPageNumber] = useState(1);
-    const maxPageNumber = Math.max(Math.ceil(items.length/5), 1);
+    const maxPageNumber = Math.max(Math.ceil(elements.length/5), 1);
     const perPageCount = 5;
 
     useEffect(() => {
@@ -14,11 +14,11 @@ const Paginator = <T,>({ items, children }: {
         } else if (pageNumber === 0) {
             setPageNumber(1);
         }
-    }, [items])
+    }, [elements])
 
     return <>
         {/* slicing array with arguments 0-5, 5-10 etc */}
-        {children(items.slice((pageNumber - 1) * perPageCount, (pageNumber - 1) * perPageCount + perPageCount))}
+        {children(elements.slice((pageNumber - 1) * perPageCount, (pageNumber - 1) * perPageCount + perPageCount))}
         <div className="button-section bordered">
             <button
                 disabled={pageNumber === 1}

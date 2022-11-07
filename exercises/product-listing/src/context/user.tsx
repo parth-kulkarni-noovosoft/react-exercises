@@ -1,10 +1,15 @@
 import React, { PropsWithChildren, useMemo, useState } from "react";
+import { API_URL } from "../constants";
+import useFetch from "../hooks/useFetch";
+import { IUserInfo } from "../types";
 
 const UserContext = React.createContext<{
     userID: number;
+    userInfo: IUserInfo | null;
     changeUser: (id: number) => void
 }>({
     userID: 5,
+    userInfo: null,
     changeUser() {
         // defined as default value, does nothing
     }
@@ -13,11 +18,13 @@ const UserContext = React.createContext<{
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [userID, setUserID] = useState<number>(5);
+    const userInfo = useFetch<IUserInfo>(`${API_URL}/users/${userID}?select=id,firstName,lastName`);
     
     const contextValue = useMemo(() => ({
         userID,
+        userInfo,
         changeUser(id: number) { setUserID(id) }
-    }), [userID])
+    }), [userID, userInfo])
 
     return (
         <UserContext.Provider value={contextValue}>

@@ -1,3 +1,7 @@
+import { Dispatch } from "react";
+import useCart from "../hooks/useCart";
+import { PropertiesReducerAction } from "../reducers/propertiesReducer";
+
 export interface IProductInfo {
     id: number;
     title: string;
@@ -50,4 +54,10 @@ export interface IUserInfo {
 
 export type Timed<T> = T & {
     timestamp: number;
+}
+
+export interface IOutletContext {
+    properties: IPropertiesState
+    dispatch: Dispatch<PropertiesReducerAction>
+    cart: ReturnType<typeof useCart>
 }

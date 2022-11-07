@@ -1,5 +1,5 @@
 import { Reducer } from "react";
-import { IPropertiesState } from "../typings";
+import { IPropertiesState } from "../types";
 
 export enum PropertyChangeEvents {
     QUERY = 'query',
