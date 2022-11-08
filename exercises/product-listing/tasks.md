@@ -1,6 +1,6 @@
-- [ ] naming convention
+- [x] naming convention
 - [x] folder for each component / entity
 - [x] fetch hooks should be common
 - [x] reduce /cart to cartDisplay since it's not needed for main page
 - [x] navbar for both pages via router / outlet
-- [ ] styling improvement (usable for smaller devices)
+- [x] styling improvement (usable for smaller devices)
