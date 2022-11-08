@@ -29,7 +29,7 @@ const useProducts = (productIDs: number[]) => {
         };
 
 
-        getProductDetails();
+        getProductDetails().catch(e => console.error(e));
     }, [productIDs]);
     return products;
 }
