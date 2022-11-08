@@ -2,7 +2,7 @@ import React, { useContext, useMemo } from "react"
 import UserContext from "../../context/user";
 import { PropertiesReducerAction, PropertyChangeEvents } from "../../reducers/propertiesReducer";
 import { IPropertiesState, IUserInfo, PaginatedResponse } from "../../types";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch";
 import { API_URL } from "../../constants";
 
@@ -35,6 +35,10 @@ const Navbar: React.FC<INavbarProps> = ({
         ),
         [allUserNames]);
 
+    const location = useLocation();
+    const to = location.pathname === '/' ? '/cart' : '/';
+    const toText = to === '/' ? 'Home' : 'Cart';
+
     return (
         <div className="input-container">
             <input
@@ -58,9 +62,10 @@ const Navbar: React.FC<INavbarProps> = ({
                 })}
             </select>
             <div className="status bordered">
-                <Link to='/cart' className='link'>
+                <Link to={to} className='link'>
                     <span>{userInfo?.firstName ?? 'default'}&apos;s Cart</span>
                     <span>{cartSize} Product{cartSize > 1 ? 's' : ''}</span>
+                    <span>Go to {toText}</span>
                 </Link>
             </div>
             <select
