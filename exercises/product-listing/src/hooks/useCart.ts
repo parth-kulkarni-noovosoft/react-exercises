@@ -25,7 +25,7 @@ interface ILocalStorageData {
     }>
 }
 
-const generatePutItemsRequest = (payload: IRequestPayload) => {
+const generatePutProductsRequest = (payload: IRequestPayload) => {
     return new Request(Routes.cart(payload.cartID), {
         method: 'PUT',
         body: JSON.stringify({ products: payload.products })
@@ -75,17 +75,17 @@ const useCart = () => {
         }
         const request = cartID === 0
             ? generateAddCartRequest(payload)
-            : generatePutItemsRequest(payload)
+            : generatePutProductsRequest(payload)
         const response = await fetch(request);
         const cartData: ICartInfo = await response.json()
         cb(cartData);
     }
 
     useEffect(() => {
-        const getInitialItems = async () => {
-            const item = localStorage.getItem('cart-data')
-            if (item) {
-                const parsedDocument: ILocalStorageData = JSON.parse(item);
+        const getInitialProducts = async () => {
+            const localCartData = localStorage.getItem('cart-data')
+            if (localCartData) {
+                const parsedDocument: ILocalStorageData = JSON.parse(localCartData);
                 const currentUserData = parsedDocument[userID];
 
                 if (!isStale(currentUserData)) {
@@ -118,16 +118,16 @@ const useCart = () => {
             return;
         }
 
-        getInitialItems().catch(e => console.error(e));
+        getInitialProducts().catch(e => console.error(e));
     }, [userID])
 
 
     return useMemo(() => ({
         getProductIDs: () => cartProducts,
 
-        addProduct: async (itemID: number) => {
+        addProduct: async (productID: number) => {
             const newCartList = cartProducts
-                .concat(itemID)
+                .concat(productID)
 
             await updateCartAndRequest(newCartList, (cartData) => {
                 setCartProducts(newCartList);
@@ -138,9 +138,9 @@ const useCart = () => {
             });
         },
 
-        removeProduct: async (itemID: number) => {
+        removeProduct: async (productID: number) => {
             const remainingProductList = cartProducts
-                .filter(id => id !== itemID)
+                .filter(id => id !== productID)
 
             await updateCartAndRequest(remainingProductList, () => {
                 setCartProducts(remainingProductList);
