@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo, useContext, useRef } from "react";
 import UserContext from "../context/user";
 import { CartsResponse, ICartInfo, Timed } from "../types";
-import { API_URL } from "../constants";
+import { Routes } from "../constants";
 import { isStale } from "../utils";
 
 interface IRequestPayload {
@@ -26,14 +26,14 @@ interface ILocalStorageData {
 }
 
 const generatePutItemsRequest = (payload: IRequestPayload) => {
-    return new Request(`${API_URL}/carts/${payload.cartID}`, {
+    return new Request(Routes.cart(payload.cartID), {
         method: 'PUT',
         body: JSON.stringify({ products: payload.products })
     })
 }
 
 const generateAddCartRequest = (payload: IRequestPayload) => {
-    return new Request(`${API_URL}/carts/add`, {
+    return new Request(Routes.cartAdd(), {
         method: 'POST',
         body: JSON.stringify({
             userId: payload.userID,
@@ -97,7 +97,7 @@ const useCart = () => {
             }
 
             const cartResponse = isStale(cache.current[userID])
-                ? await (await fetch(`${API_URL}/carts/user/${userID}`)).json() as CartsResponse
+                ? await (await fetch(Routes.userCarts(userID))).json() as CartsResponse
                 : cache.current[userID];
 
             cache.current[userID] = {

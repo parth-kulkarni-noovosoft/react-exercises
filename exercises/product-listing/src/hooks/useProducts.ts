@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { API_URL } from "../constants";
+import { Routes } from "../constants";
 import { IProductInfo } from "../types";
 
 const useProducts = (productIDs: number[]) => {
@@ -17,7 +17,7 @@ const useProducts = (productIDs: number[]) => {
                         return cache.current[productID];
                     }
 
-                    return fetch(`${API_URL}/products/${productID}`).then(e => e.json())
+                    return fetch(Routes.product(productID)).then(e => e.json())
                 })
             )
 

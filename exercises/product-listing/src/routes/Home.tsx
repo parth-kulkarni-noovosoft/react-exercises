@@ -1,6 +1,6 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
-import { API_URL } from "../constants";
+import { Routes } from "../constants";
 import useFetch from "../hooks/useFetch";
 import { IOutletContext, ProductsResponse } from "../types";
 import ProductList from "../components/ProductList/ProductList";
@@ -8,7 +8,7 @@ import ProductList from "../components/ProductList/ProductList";
 const App: React.FC = () => {
   const { properties, cart } = useOutletContext<IOutletContext>();
 
-  const productsResponse = useFetch<ProductsResponse>(`${API_URL}/products/search?q=${properties.query}&limit=100`);
+  const productsResponse = useFetch<ProductsResponse>(Routes.productSearch(properties.query));
   const filteredProducts = productsResponse?.products?.filter(product => {
     if (properties.category === 'All') return true;
     else return product.category === properties.category

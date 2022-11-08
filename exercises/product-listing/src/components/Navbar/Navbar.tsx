@@ -4,7 +4,7 @@ import { PropertiesReducerAction, PropertyChangeEvents } from "../../reducers/pr
 import { IPropertiesState, IUserInfo, PaginatedResponse } from "../../types";
 import { Link, useLocation } from 'react-router-dom';
 import useFetch from "../../hooks/useFetch";
-import { API_URL } from "../../constants";
+import { Routes } from "../../constants";
 
 import './Navbar.css';
 
@@ -19,11 +19,11 @@ const Navbar: React.FC<INavbarProps> = ({
     properties,
     dispatch
 }) => {
-    const categories = useFetch<string[]>(`${API_URL}/products/categories`) ?? [];
+    const categories = useFetch<string[]>(Routes.categories()) ?? [];
     const { userInfo } = useContext(UserContext);
     const allUserNames = useFetch<PaginatedResponse<{
         users: IUserInfo[]
-    }>>(`${API_URL}/users?limit=100&select=firstName`);
+    }>>(Routes.users());
 
     const { userID, changeUser } = useContext(UserContext);
 

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useMemo, useState } from "react";
-import { API_URL } from "../constants";
+import { Routes } from "../constants";
 import useFetch from "../hooks/useFetch";
 import { IUserInfo } from "../types";
 
@@ -18,7 +18,7 @@ const UserContext = React.createContext<{
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [userID, setUserID] = useState<number>(5);
-    const userInfo = useFetch<IUserInfo>(`${API_URL}/users/${userID}?select=id,firstName,lastName`);
+    const userInfo = useFetch<IUserInfo>(Routes.user(userID));
     
     const contextValue = useMemo(() => ({
         userID,
