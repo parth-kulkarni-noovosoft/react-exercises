@@ -15,14 +15,12 @@ const App: React.FC = () => {
   }) ?? [];
 
   return (
-    <div>
-      <ProductList
-        addProductToCart={cart.addProduct}
-        removeProductFromCart={cart.removeProduct}
-        isAlreadyAdded={(id: number) => cart.getProductIDs().includes(id)}
-        products={filteredProducts}
-      />
-    </div>
+    <ProductList
+      addProductToCart={cart.addProduct}
+      removeProductFromCart={cart.removeProduct}
+      isAlreadyAdded={(id: number) => cart.getProductIDs().includes(id)}
+      products={filteredProducts}
+    />
   )
 }
 export default App

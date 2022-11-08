@@ -15,14 +15,12 @@ const Cart: React.FC = () => {
   })
 
   return (
-    <div className="container">
-      <ProductList
-        addProductToCart={() => { /* Does nothing */ }}
-        removeProductFromCart={cart.removeProduct}
-        isAlreadyAdded={(_id) => true}
-        products={filteredProducts}
-      />
-    </div>
+    <ProductList
+      addProductToCart={() => { /* Does nothing */ }}
+      removeProductFromCart={cart.removeProduct}
+      isAlreadyAdded={(_id) => true}
+      products={filteredProducts}
+    />
   )
 }
 
