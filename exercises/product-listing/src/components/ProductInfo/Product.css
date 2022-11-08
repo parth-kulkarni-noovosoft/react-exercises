@@ -13,11 +13,6 @@
     align-items: center;
 }
 
-.content-container {
-    width: 100%;
-    display: flex;
-}
-
 .details-container {
     width: 60%;
     padding: 1rem 2rem 0 2rem;
