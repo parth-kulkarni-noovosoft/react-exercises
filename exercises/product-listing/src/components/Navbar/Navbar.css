@@ -6,7 +6,7 @@
 }
 
 .input-container .query {
-    width: 40%;
+    flex-grow: 1;
     height: 100%;
 
     font-size: inherit;
@@ -29,6 +29,13 @@
 }
 
 .user-selection {
-    flex-grow: 0.5;
+    flex-grow: 1;
     font-size: 1.25rem;
+}
+
+@media only screen and (max-width: 992px) {
+    .input-container {
+        flex-direction: column;
+        height: auto;
+    }
 }

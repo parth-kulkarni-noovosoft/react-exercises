@@ -13,7 +13,7 @@ const Product: React.FC<IProductProps> = ({ product, addProductToCart, isAddedTo
     const discountedPrice = ((product.price * (100 - product.discountPercentage)) / 100).toFixed(2);
 
     return <div className="products-container">
-        <div className="img-container">
+        <div className="img-container bordered">
             <img src={product.thumbnail} alt={product.title} />
         </div>
         <div className="details-container bordered">
