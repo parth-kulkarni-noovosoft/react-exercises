@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useMemo, useReducer } from 'react';
 import { Outlet } from "react-router-dom";
 import useCart from '../hooks/useCart';
 import propertiesReducer from '../reducers/propertiesReducer';
@@ -12,6 +12,8 @@ const Layout: React.FC = () => {
 
     const cart = useCart();
 
+    const contextValue = useMemo(() => ({properties, dispatch, cart}), [properties, cart])
+
     return (<>
         <div className="container">
             <Navbar
@@ -19,7 +21,7 @@ const Layout: React.FC = () => {
                 dispatch={dispatch}
                 cartSize={cart.getProductIDs().length}
             />
-            <Outlet context={{ properties, dispatch, cart }} />
+            <Outlet context={contextValue}/>
         </div>
     </>);
 }
