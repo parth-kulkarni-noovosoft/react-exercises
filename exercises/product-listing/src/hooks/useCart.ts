@@ -28,6 +28,7 @@ interface ILocalStorageData {
 const generatePutProductsRequest = (payload: IRequestPayload) => {
     return new Request(Routes.cart(payload.cartID), {
         method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ products: payload.products })
     })
 }
@@ -35,6 +36,7 @@ const generatePutProductsRequest = (payload: IRequestPayload) => {
 const generateAddCartRequest = (payload: IRequestPayload) => {
     return new Request(Routes.cartAdd(), {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             userId: payload.userID,
             products: payload.products
