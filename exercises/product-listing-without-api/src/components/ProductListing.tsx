@@ -22,7 +22,7 @@ class ProductListing extends React.Component<IProductListingProps> {
         const incQty = (id: number) => cartStore.changeProductQuantity(id, 1);
         const decQty = (id: number) => cartStore.changeProductQuantity(id, -1);
 
-        if (store.count === 0) {
+        if (store.products.length === 0) {
             return <h2>No Products to display</h2>
         }
 

@@ -1,4 +1,4 @@
-import { computed, action, observable, makeAutoObservable } from "mobx";
+import { action, observable, makeAutoObservable } from "mobx";
 import { ICartProduct } from "../interfaces";
 import RootStore from "./RootStore";
 
@@ -8,18 +8,12 @@ export default class CartStore {
     constructor(
         public rootStore: RootStore
     ) {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {
+            getProductQuantity: false
+        });
     }
 
-    @computed get count() {
-        return this.products.length;
-    }
-
-    @computed get nextID() {
-        return this.products.length + 1;
-    }
-
-    @computed getProductQuantity(id: ICartProduct['id']): number {
+    getProductQuantity(id: ICartProduct['id']): number {
         const product = this.products.find((product) => product.id === id);
         if (!product) return 0;
         return product.quantity;

@@ -15,9 +15,9 @@ export default class RootStore {
     public formStore: FormStore;
 
     constructor(routes: Route[]) {
-        this.productStore = new ProductStore(this);
+        this.productStore = new ProductStore();
         this.cartStore = new CartStore(this);
-        this.formStore = new FormStore(this);
+        this.formStore = new FormStore();
 
         this.routerStore = new RouterStore(
             routes,

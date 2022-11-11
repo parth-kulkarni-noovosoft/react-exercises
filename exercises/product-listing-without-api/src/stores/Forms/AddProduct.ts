@@ -1,6 +1,5 @@
 import { action, observable, makeAutoObservable } from "mobx";
 import { IProduct } from "../../interfaces";
-import RootStore from "../RootStore";
 
 export default class AddProductStore {
     @observable state: Omit<IProduct, 'id'> = {
@@ -12,9 +11,7 @@ export default class AddProductStore {
         quantity: 0
     }
 
-    constructor(
-        public rootStore: RootStore
-    ) {
+    constructor() {
         makeAutoObservable(this);
     }
 

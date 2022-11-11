@@ -1,27 +1,16 @@
-import RootStore from "./RootStore";
-import { action, computed, makeAutoObservable, observable } from "mobx";
+import { action, makeAutoObservable, observable } from "mobx";
 import { IProduct } from "../interfaces";
 
 class ProductStore {
     @observable products: IProduct[] = [];
 
-    constructor(
-        public rootStore: RootStore,
-    ) {
+    constructor() {
         makeAutoObservable(this);
-    }
-
-    @computed get count() {
-        return this.products.length;
-    }
-
-    @computed get nextID() {
-        return this.count + 1;
     }
 
     @action addProduct(product: IProduct | Omit<IProduct, 'id'>) {
         this.products.push({
-            id: this.nextID,
+            id: this.products.length + 1,
             ...product
         });
     }

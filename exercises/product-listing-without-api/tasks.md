@@ -2,3 +2,10 @@
 - [x] Product Component
 - [x] Add To Cart Widget
 - [x] Cart Page
+- [x] Remove Computed
+- [x] Remove unused property RootStore
+- [ ] Singular Store for Form - FormStore
+- [ ] Qty change widget in /cart
+- [ ] Qty change widget in /add-product
+- [ ] Dropdown for category
+- [ ] Component that builds forms based on input/labels and handles optional validation 
