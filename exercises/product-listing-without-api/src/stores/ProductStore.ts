@@ -1,5 +1,5 @@
 import RootStore from "./RootStore";
-import { action, autorun, computed, makeAutoObservable, observable } from "mobx";
+import { action, computed, makeAutoObservable, observable } from "mobx";
 import { IProduct } from "../interfaces";
 
 class ProductStore {
@@ -19,7 +19,7 @@ class ProductStore {
         return this.count + 1;
     }
 
-    @action addProduct(product: IProduct | Omit<IProduct, 'id'>): void {
+    @action addProduct(product: IProduct | Omit<IProduct, 'id'>) {
         this.products.push({
             id: this.nextID,
             ...product

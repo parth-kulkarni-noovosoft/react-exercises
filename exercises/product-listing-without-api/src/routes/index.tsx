@@ -1,9 +1,10 @@
 import AddProduct from "./AddProduct";
-import Home from "./Home";
 import NotFound from "./NotFound";
+import Page from "./Page";
 
 const viewMap = {
-    'home': <Home />,
+    'cart': <Page />,
+    'home': <Page />,
     'notFound': <NotFound />,
     'addProduct': <AddProduct />
 };

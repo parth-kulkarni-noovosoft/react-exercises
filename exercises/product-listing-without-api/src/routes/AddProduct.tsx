@@ -1,93 +1,87 @@
 import { action } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { StoreContext } from "../context/AppContext";
-import { IProduct } from "../interfaces";
 
-class AddProduct extends React.Component<unknown, Omit<IProduct, 'id'>> {
-    declare context: React.ContextType<typeof StoreContext>
+@observer
+class AddProduct extends React.Component {
+    context: React.ContextType<typeof StoreContext> | undefined
     static contextType = StoreContext;
 
-    constructor(props: unknown) {
-        super(props);
-
-        this.state = {
-            category: '',
-            description: '',
-            discountedPrice: 0,
-            name: '',
-            price: 0,
-            quantity: 0
-        }
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange<T extends keyof typeof this.state>(key: T, val: typeof this.state[T]) {
-        console.log(key, val);
-        this.setState(state => ({
-            ...state,
-            [key]: val
-        }))
-    }
-
     render(): React.ReactNode {
-        return <form>
-            <div>
-                <label htmlFor="name">Name</label>
-                <input
-                    type="text"
-                    onChange={e => this.handleChange('name', e.target.value)}
-                    value={this.state.name}
-                />
-            </div>
-            <div>
-                <label htmlFor="category">Category</label>
-                <input
-                    type="text"
-                    onChange={e => this.handleChange('category', e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="price">Price</label>
-                <input
-                    type="number"
-                    value={this.state.price}
-                    onChange={e => this.handleChange('price', +e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="discountedPrice">Discounted Price</label>
-                <input
-                    type="number"
-                    value={this.state.discountedPrice}
-                    onChange={e => this.handleChange('discountedPrice', +e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="quantity">Quantity</label>
-                <input
-                    type="number"
-                    value={this.state.quantity}
-                    onChange={e => this.handleChange('quantity', +e.target.value)}
-                />
-            </div>
-            <div>
-                <label htmlFor="description">Description</label>
-                <textarea
-                    name="description"
-                    value={this.state.description}
-                    onChange={e => this.handleChange('description', e.target.value)}
-                />
-            </div>
-            <button
-                type="submit"
-                onClick={action(e => {
-                    this.context?.productStore.addProduct(this.state);
-                    e.preventDefault();
-                    this.context?.routerStore.goTo('home');
-                })}
-            >Add Product</button>
-        </form>
+        const {
+            formStore: { addProductStore },
+            routerStore,
+            productStore
+        } = this.context!;
+
+        return <div className="container">
+            <form>
+                <h1>Add Product Form</h1>
+                <div className="field">
+                    <label htmlFor="name">Name</label>
+                    <input
+                        type="text"
+                        onChange={e => addProductStore.updateSpecificValue('name', e.target.value)}
+                        value={addProductStore.state.name}
+                    />
+                </div>
+                <div className="field">
+                    <label htmlFor="category">Category</label>
+                    <input
+                        type="text"
+                        onChange={e => addProductStore.updateSpecificValue('category', e.target.value)}
+                    />
+                </div>
+                <div className="field">
+                    <label htmlFor="price">Price</label>
+                    <input
+                        type="number"
+                        value={addProductStore.state.price}
+                        onChange={e => addProductStore.updateSpecificValue('price', +e.target.value)}
+                    />
+                </div>
+                <div className="field">
+                    <label htmlFor="discountedPrice">Discounted Price</label>
+                    <input
+                        type="number"
+                        value={addProductStore.state.discountedPrice}
+                        onChange={e => addProductStore.updateSpecificValue('discountedPrice', +e.target.value)}
+                    />
+                </div>
+                <div className="field">
+                    <label htmlFor="quantity">Quantity</label>
+                    <input
+                        type="number"
+                        value={addProductStore.state.quantity}
+                        onChange={e => addProductStore.updateSpecificValue('quantity', +e.target.value)}
+                    />
+                </div>
+                <div className="field">
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        name="description"
+                        value={addProductStore.state.description}
+                        onChange={e => addProductStore.updateSpecificValue('description', e.target.value)}
+                    />
+                </div>
+                <button
+                    type="submit"
+                    onClick={action(e => {
+                        productStore.addProduct(addProductStore.state);
+                        e.preventDefault();
+                        addProductStore.resetAllValues();
+                        routerStore.goTo('home').catch(console.error);
+                    })}
+                >Add Product</button>
+                <button
+                    type="reset"
+                    onClick={() => addProductStore.resetAllValues()}
+                >
+                    Reset
+                </button>
+            </form>
+        </div>
     }
 }
 

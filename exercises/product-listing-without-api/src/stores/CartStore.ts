@@ -1,8 +1,6 @@
 import { computed, action, observable, makeAutoObservable } from "mobx";
-import { IProduct } from "../interfaces";
+import { ICartProduct } from "../interfaces";
 import RootStore from "./RootStore";
-
-type ICartProduct = Pick<IProduct, 'id' | 'quantity'>;
 
 export default class CartStore {
     @observable products: ICartProduct[] = [];
@@ -13,6 +11,14 @@ export default class CartStore {
         makeAutoObservable(this);
     }
 
+    @computed get count() {
+        return this.products.length;
+    }
+
+    @computed get nextID() {
+        return this.products.length + 1;
+    }
+
     @computed getProductQuantity(id: ICartProduct['id']): number {
         const product = this.products.find((product) => product.id === id);
         if (!product) return 0;
@@ -21,22 +27,32 @@ export default class CartStore {
 
     @action changeProductQuantity(id: ICartProduct['id'], amount: number) {
         const product = this.products.find((product) => product.id === id);
-        if (!product) return;
+        if (product) {
+            product.quantity += amount;
+            if (product.quantity === 0) {
+                this.removeProduct(id);
+            }
+            return;
+        }
 
-        product.quantity += amount;
+        this.addProduct({
+            id,
+            quantity: amount
+        })
     }
 
-    @action incrementProductQuantity(id: ICartProduct['id']) {
-        this.changeProductQuantity(id, 1);
-    }
-
-    @action decrementProductQuantity(id: ICartProduct['id']) {
-        this.changeProductQuantity(id, -1);
-    }
-
-    @action addProduct(productToAdd: ICartProduct) {
+    @action addProduct(productToAdd: Pick<ICartProduct, 'id' | 'quantity'>) {
         const productExists = this.rootStore.productStore.products.find(product => product.id === productToAdd.id);
         if (!productExists) return null;
-        this.products.push(productToAdd);
+        this.products.push({
+            ...productToAdd,
+            productData: productExists
+        });
+    }
+
+    @action removeProduct(id: ICartProduct['id']) {
+        const productIdx = this.products.findIndex(product => product.id === id);
+        if (productIdx === -1) return;
+        this.products.splice(productIdx, 1);
     }
 }

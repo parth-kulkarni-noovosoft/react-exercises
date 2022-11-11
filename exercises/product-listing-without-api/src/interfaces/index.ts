@@ -7,3 +7,9 @@ export interface IProduct {
     quantity: number
     description: string
 }
+
+export type ICartProduct = {
+    id: number
+    quantity: number
+    productData: IProduct
+};

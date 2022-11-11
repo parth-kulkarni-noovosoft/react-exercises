@@ -1,4 +1,4 @@
-- [ ] Styling
-- [ ] Product Component
-- [ ] Add To Cart Widget
-- [ ] Cart Page
+- [x] Styling
+- [x] Product Component
+- [x] Add To Cart Widget
+- [x] Cart Page

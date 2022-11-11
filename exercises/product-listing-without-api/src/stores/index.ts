@@ -18,6 +18,10 @@ const routes: Route[] = [
     {
         name: 'home',
         pattern: '/'
+    },
+    {
+        name: 'cart',
+        pattern: '/cart'
     }
 ]
 
