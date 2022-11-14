@@ -2,7 +2,7 @@ import { StoreContext } from '../context/AppContext';
 import { observer } from 'mobx-react';
 import React from 'react';
 import Product from './Product';
-import { ICartProduct, IProduct } from '../interfaces';
+import { IProduct } from '../interfaces';
 
 interface IProductListingProps {
     isCart?: boolean
@@ -16,13 +16,17 @@ class ProductListing extends React.Component<IProductListingProps> {
     render(): React.ReactNode {
         const { cartStore, productStore } = this.context!;
 
-        const store = this.props.isCart ? cartStore : productStore;
+        let products: IProduct[];
+        if (this.props.isCart) {
+            products = cartStore.products.map(product => product.productData);
+        } else {
+            products = productStore.products;
+        }
 
         const getQtyInCart = (id: number) => cartStore.getProductQuantity(id);
-        const incQty = (id: number) => cartStore.changeProductQuantity(id, 1);
-        const decQty = (id: number) => cartStore.changeProductQuantity(id, -1);
+        const changeQty = (id: number, val: number) => cartStore.setProductQuantity(id, val);
 
-        if (store.products.length === 0) {
+        if (products.length === 0) {
             return <h2>No Products to display</h2>
         }
 
@@ -35,27 +39,19 @@ class ProductListing extends React.Component<IProductListingProps> {
             <tbody>
                 <tr>
                     {(this.props.isCart ? cartListingLabels : homeListingLabels)
-                            .map(label => <th
-                                    key={label}
-                                    className={toHideForSmallerScreens.includes(label) ? 'hide': ''}
-                                >{label}</th>)
+                        .map(label => <th
+                            key={label}
+                            className={toHideForSmallerScreens.includes(label) ? 'hide' : ''}
+                        >{label}</th>)
                     }
                 </tr>
-                {store.products.map(product => {
-                    if (this.props.isCart) {
-                        return <Product
-                            isCart={true}
-                            key={product.id}
-                            product={product as ICartProduct}
-                        />
-                    }
-
+                {products.map(product => {
                     return <Product
-                        decQty={() => decQty(product.id)}
-                        incQty={() => incQty(product.id)}
-                        getQtyInCart={() => getQtyInCart(product.id)}
-                        product={product as IProduct}
+                        isCart={this.props.isCart ?? false}
                         key={product.id}
+                        getQtyInCart={() => getQtyInCart(product.id)}
+                        changeQty={(v: number) => changeQty(product.id, v)}
+                        product={product}
                     />
                 })}
             </tbody>

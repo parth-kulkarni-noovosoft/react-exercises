@@ -19,10 +19,10 @@ export default class CartStore {
         return product.quantity;
     }
 
-    @action changeProductQuantity(id: ICartProduct['id'], amount: number) {
+    @action setProductQuantity(id: ICartProduct['id'], amount: number) {
         const product = this.products.find((product) => product.id === id);
         if (product) {
-            product.quantity += amount;
+            product.quantity = amount;
             if (product.quantity === 0) {
                 this.removeProduct(id);
             }

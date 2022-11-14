@@ -1,54 +1,42 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { ICartProduct, IProduct } from "../interfaces";
+import { IProduct } from "../interfaces";
+import QuantityWidget from "./QuantityWidget";
 
-interface ICartProductProps {
-    isCart: true;
-    product: ICartProduct;
-}
-
-interface IHomeProductProps {
-    isCart?: false;
+interface IProductProps {
+    isCart: boolean;
     product: IProduct;
     getQtyInCart: () => number;
-    incQty: () => void;
-    decQty: () => void;
+    changeQty: (v: number) => void;
 }
 
-type ProductProps = ICartProductProps | IHomeProductProps;
-
 @observer
-class Product extends React.Component<ProductProps> {
+class Product extends React.Component<IProductProps> {
     render(): React.ReactNode {
-        const productData = this.props.isCart
-            ? this.props.product.productData
-            : this.props.product;
+        const productData = this.props.product;
 
-        let widget = null;
+        const productQtyInCart = this.props.getQtyInCart();
+        const widget = (<td>
+            <QuantityWidget
+                setValue={(v) => {
+                    if (productData.quantity < v) {
+                        alert('Request over item quantity');
+                        return;
+                    }
+                    this.props.changeQty(v)
+                }}
+                quantity={productQtyInCart}
 
-        if (!this.props.isCart) {
-            const productQtyInCart = this.props.getQtyInCart();
-
-            widget = (<td>
-                <div className="widget">
-                    <button
-                        onClick={this.props.decQty}
-                        disabled={productQtyInCart === 0}
-                    >-</button>
-                    <span>{productQtyInCart}</span>
-                    <button
-                        onClick={this.props.incQty}
-                        disabled={this.props.product.quantity === productQtyInCart}
-                    >+</button>
-                </div>
-            </td>)
-        }
+                isDecDisabled={productQtyInCart === 0}
+                isIncDisabled={productData.quantity === productQtyInCart}
+            />
+        </td>)
 
         if (this.props.isCart) {
             return <tr>
                 <td>{productData.name}</td>
-                <td>{productData.discountedPrice}</td>
-                <td>{this.props.product.quantity}</td>
+                <td>${productData.price} <s className="hide">${productData.discountedPrice}</s></td>
+                {widget}
             </tr>
         }
 

@@ -15,16 +15,6 @@ td {
   border-spacing: 0;
 }
 
-.widget {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.widget button {
-  flex-grow: 0.25;
-}
-
 .container {
   width: 95%;
   margin: 0 auto;
@@ -89,7 +79,7 @@ form {
   background-color: whitesmoke;
 }
 
-form .field {
+.field {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -98,7 +88,45 @@ form .field {
 form input,
 form textarea {
   font-size: inherit;
-  max-width: 50%;
+}
+
+.widget-input {
+  background-color: transparent;
+  text-align: center;
+  color: inherit;
+  border: none;
+}
+
+.widget {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+
+  text-align: center;
+  align-items: center;
+}
+
+.input-section {
+  width: 50%;
+  display: flex;
+}
+
+.input-section input,
+.input-section textarea,
+.input-section select {
+  width: 100%;
+}
+
+.widget button {
+  flex-grow: 0.1;
+}
+
+form .widget button {
+  width: 25%;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 @media only screen and (max-width: 768px) {

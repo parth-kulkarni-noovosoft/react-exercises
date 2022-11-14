@@ -5,7 +5,7 @@ import {
     createRouterState,
     type Route
 } from 'mobx-state-router';
-import FormStore from './Forms';
+import FormStore from './FormStore';
 
 
 export default class RootStore {

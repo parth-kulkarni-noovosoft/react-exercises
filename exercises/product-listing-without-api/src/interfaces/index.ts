@@ -13,3 +13,19 @@ export type ICartProduct = {
     quantity: number
     productData: IProduct
 };
+
+export enum FieldTypes {
+    TEXT,
+    TEXTAREA,
+    NUMBER,
+    SUBMIT,
+    RESET,
+    SELECT
+}
+
+export type ValidationResult = {
+    isValid: true
+} | {
+    isValid: false,
+    errorMessage: string
+}

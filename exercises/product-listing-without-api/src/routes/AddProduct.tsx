@@ -1,7 +1,8 @@
-import { action } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import Form, { FieldsOpts } from "../components/Form";
 import { StoreContext } from "../context/AppContext";
+import { FieldTypes, IProduct, ValidationResult } from "../interfaces";
 
 @observer
 class AddProduct extends React.Component {
@@ -9,78 +10,87 @@ class AddProduct extends React.Component {
     static contextType = StoreContext;
 
     render(): React.ReactNode {
-        const {
-            formStore: { addProductStore },
-            routerStore,
-            productStore
-        } = this.context!;
+        const { routerStore, productStore } = this.context!;
+
+        const isPositiveCheck = (val: string | number | boolean): ValidationResult => {
+            if (val < 0) {
+                return {
+                    isValid: false,
+                    errorMessage: 'Value needs to be above 0'
+                }
+            }
+            return {
+                isValid: true
+            }
+        }
+
+        const components: FieldsOpts[] = [
+            {
+                name: 'name',
+                type: FieldTypes.TEXT,
+            },
+            {
+                name: 'category',
+                type: FieldTypes.SELECT,
+                options: ['smartphone', 'electronics', 'chairs']
+            },
+            {
+                name: 'price',
+                type: FieldTypes.NUMBER,
+                validation: isPositiveCheck
+            },
+            {
+                name: 'discountedPrice',
+                displayName: 'discounted price',
+                type: FieldTypes.NUMBER,
+                validation: isPositiveCheck
+            },
+            {
+                name: 'quantity',
+                type: FieldTypes.NUMBER,
+                validation: isPositiveCheck
+            },
+            {
+                name: 'description',
+                type: FieldTypes.TEXTAREA,
+            },
+            {
+                name: 'Add Product',
+                type: FieldTypes.SUBMIT,
+            },
+            {
+                name: 'Reset',
+                type: FieldTypes.RESET
+            }
+        ];
 
         return <div className="container">
-            <form>
-                <h1>Add Product Form</h1>
-                <div className="field">
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        onChange={e => addProductStore.updateSpecificValue('name', e.target.value)}
-                        value={addProductStore.state.name}
-                    />
-                </div>
-                <div className="field">
-                    <label htmlFor="category">Category</label>
-                    <input
-                        type="text"
-                        onChange={e => addProductStore.updateSpecificValue('category', e.target.value)}
-                    />
-                </div>
-                <div className="field">
-                    <label htmlFor="price">Price</label>
-                    <input
-                        type="number"
-                        value={addProductStore.state.price}
-                        onChange={e => addProductStore.updateSpecificValue('price', +e.target.value)}
-                    />
-                </div>
-                <div className="field">
-                    <label htmlFor="discountedPrice">Discounted Price</label>
-                    <input
-                        type="number"
-                        value={addProductStore.state.discountedPrice}
-                        onChange={e => addProductStore.updateSpecificValue('discountedPrice', +e.target.value)}
-                    />
-                </div>
-                <div className="field">
-                    <label htmlFor="quantity">Quantity</label>
-                    <input
-                        type="number"
-                        value={addProductStore.state.quantity}
-                        onChange={e => addProductStore.updateSpecificValue('quantity', +e.target.value)}
-                    />
-                </div>
-                <div className="field">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                        name="description"
-                        value={addProductStore.state.description}
-                        onChange={e => addProductStore.updateSpecificValue('description', e.target.value)}
-                    />
-                </div>
-                <button
-                    type="submit"
-                    onClick={action(e => {
-                        productStore.addProduct(addProductStore.state);
-                        e.preventDefault();
-                        addProductStore.resetAllValues();
-                        routerStore.goTo('home').catch(console.error);
-                    })}
-                >Add Product</button>
-                <button
-                    type="reset"
-                    onClick={() => addProductStore.resetAllValues()}
-                >
-                    Reset
-                </button>
-            </form>
+            <Form
+                title='Add Product Form'
+                components={components}
+                onSubmit={(data) => {
+                    const emptyFields = ['name', 'description'].some(key => data[key] === '');
+                    if (emptyFields) {
+                        alert('Empty fields are not allowed!');
+                        return false;
+                    }
+
+                    const zeroFields = ['price', 'discountedPrice', 'quantity'].some(key => data[key] === 0);
+                    if (zeroFields) {
+                        alert('Zero for price, discountedPrice and quantity are not allowed');
+                        return false;
+                    }
+
+                    if (data.discountedPrice > data.price) {
+                        alert('Discounted Price cannot be higher than price');
+                        return false;
+                    }
+
+                    productStore.addProduct(data as Omit<IProduct, 'id'>);
+                    routerStore.goTo('home').catch(console.error);
+                    return true;
+                }}
+            />
         </div>
     }
 }
