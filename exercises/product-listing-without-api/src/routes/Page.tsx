@@ -11,20 +11,22 @@ class Page extends React.Component {
         const { routerStore } = this.context!;
         const isCart = routerStore.getCurrentRoute()?.name === 'cart';
 
-        return <div className="container">
-            <nav className="nav">
-                <div>
-                    <span className="title">This is {isCart ? 'Cart' : 'Home'}</span>
-                </div>
-                <div className="links">
-                    <RouterLink routeName="home">Home</RouterLink>
-                    <RouterLink routeName="cart">Cart</RouterLink>
-                    <RouterLink routeName="addProduct">Add Product</RouterLink>
-                </div>
-            </nav>
+        return (
+            <div className="container">
+                <nav className="nav">
+                    <div>
+                        <span className="title">This is {isCart ? 'Cart' : 'Home'}</span>
+                    </div>
+                    <div className="links">
+                        <RouterLink routeName="home">Home</RouterLink>
+                        <RouterLink routeName="cart">Cart</RouterLink>
+                        <RouterLink routeName="addProduct">Add Product</RouterLink>
+                    </div>
+                </nav>
 
-            <ProductListing isCart={isCart} />
-        </div>
+                <ProductListing isCart={isCart} />
+            </div>
+        )
     }
 }
 

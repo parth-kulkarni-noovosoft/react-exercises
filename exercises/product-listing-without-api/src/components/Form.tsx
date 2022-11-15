@@ -101,50 +101,60 @@ class Form extends React.Component<IFormProps> {
                 />
             }
             case FieldTypes.TEXT: {
-                return <input
-                    type='text'
-                    onChange={genericOnChange}
-                    value={formStore.state[component.name] as string ?? ''}
-                />
+                return (
+                    <input
+                        type='text'
+                        onChange={genericOnChange}
+                        value={formStore.state[component.name] as string ?? ''}
+                    />
+                )
             }
             case FieldTypes.TEXTAREA: {
-                return <textarea
-                    onChange={genericOnChange}
-                    value={formStore.state[component.name] as string ?? ''}
-                />
+                return (
+                    <textarea
+                        onChange={genericOnChange}
+                        value={formStore.state[component.name] as string ?? ''}
+                    />
+                );
             }
             case FieldTypes.SUBMIT: {
-                return <button
-                    type='submit'
-                    onClick={e => {
-                        e.preventDefault();
-                        const isSubmitted = this.props.onSubmit(collectData())
-                        if (isSubmitted) {
-                            this.setInitialValues();
-                        }
-                    }}
-                >{component.name}</button>
+                return (
+                    <button
+                        type='submit'
+                        onClick={e => {
+                            e.preventDefault();
+                            const isSubmitted = this.props.onSubmit(collectData())
+                            if (isSubmitted) {
+                                this.setInitialValues();
+                            }
+                        }}
+                    >{component.name}</button>
+                )
             }
             case FieldTypes.SELECT: {
-                return <select
-                    className='capitalize'
-                    value={formStore.state[component.name] as string}
-                    onChange={genericOnChange}
-                >
-                    {component.options.map((option, idx) => <option
+                return (
+                    <select
                         className='capitalize'
-                        key={`${option}-${idx}`}
-                    >{option}</option>)}
-                </select>
+                        value={formStore.state[component.name] as string}
+                        onChange={genericOnChange}
+                    >
+                        {component.options.map((option, idx) => <option
+                            className='capitalize'
+                            key={`${option}-${idx}`}
+                        >{option}</option>)}
+                    </select>
+                )
             }
             case FieldTypes.RESET: {
-                return <button
-                    type='reset'
-                    onClick={e => {
-                        e.preventDefault();
-                        this.setInitialValues();
-                    }}
-                >{component.name}</button>
+                return (
+                    <button
+                        type='reset'
+                        onClick={e => {
+                            e.preventDefault();
+                            this.setInitialValues();
+                        }}
+                    >{component.name}</button>
+                )
             }
             default: {
                 throw new Error('Invalid Input Field Type');
@@ -153,22 +163,26 @@ class Form extends React.Component<IFormProps> {
     }
 
     render() {
-        return <form>
-            {this.props.title && <h1>{this.props.title}</h1>}
-            {this.props.components.map((component, idx) => {
-                const isButton = component.type === FieldTypes.SUBMIT || component.type === FieldTypes.RESET;
-                const fieldComponent = this.getInputField(component);
-                return <div className='field' key={idx}>
-                    {!isButton && <label className='capitalize'>
-                        {component.displayName ?? component.name}
-                    </label>
-                    }
-                    <div className='input-section'>
-                        {fieldComponent}
-                    </div>
-                </div>
-            })}
-        </form>
+        return (
+            <form>
+                {this.props.title && <h1>{this.props.title}</h1>}
+                {this.props.components.map((component, idx) => {
+                    const isButton = component.type === FieldTypes.SUBMIT || component.type === FieldTypes.RESET;
+                    const fieldComponent = this.getInputField(component);
+                    return (
+                        <div className='field' key={idx}>
+                            {!isButton && <label className='capitalize'>
+                                {component.displayName ?? component.name}
+                            </label>
+                            }
+                            <div className='input-section'>
+                                {fieldComponent}
+                            </div>
+                        </div>
+                    )
+                })}
+            </form>
+        )
     }
 }
 

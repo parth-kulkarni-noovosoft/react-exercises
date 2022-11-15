@@ -23,9 +23,6 @@ class ProductListing extends React.Component<IProductListingProps> {
             products = productStore.products;
         }
 
-        const getQtyInCart = (id: number) => cartStore.getProductQuantity(id);
-        const changeQty = (id: number, val: number) => cartStore.setProductQuantity(id, val);
-
         if (products.length === 0) {
             return <h2>No Products to display</h2>
         }
@@ -35,27 +32,29 @@ class ProductListing extends React.Component<IProductListingProps> {
 
         const toHideForSmallerScreens = ['Description', 'Category'];
 
-        return <table>
-            <tbody>
-                <tr>
-                    {(this.props.isCart ? cartListingLabels : homeListingLabels)
-                        .map(label => <th
-                            key={label}
-                            className={toHideForSmallerScreens.includes(label) ? 'hide' : ''}
-                        >{label}</th>)
-                    }
-                </tr>
-                {products.map(product => {
-                    return <Product
-                        isCart={this.props.isCart ?? false}
-                        key={product.id}
-                        getQtyInCart={() => getQtyInCart(product.id)}
-                        changeQty={(v: number) => changeQty(product.id, v)}
-                        product={product}
-                    />
-                })}
-            </tbody>
-        </table>
+        return (
+            <table>
+                <tbody>
+                    <tr>
+                        {(this.props.isCart ? cartListingLabels : homeListingLabels)
+                            .map(label => <th
+                                key={label}
+                                className={toHideForSmallerScreens.includes(label) ? 'hide' : ''}
+                            >{label}</th>)
+                        }
+                    </tr>
+                    {products.map(product => {
+                        return <Product
+                            isCart={this.props.isCart ?? false}
+                            key={product.id}
+                            getQtyInCart={() => cartStore.getProductQuantity(product.id)}
+                            changeQty={(v: number) => cartStore.setProductQuantity(product.id, v)}
+                            product={product}
+                        />
+                    })}
+                </tbody>
+            </table>
+        )
     }
 }
 

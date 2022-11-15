@@ -14,12 +14,14 @@ class App extends React.Component {
     }
 
     render(): React.ReactNode {
-        return <AppContextProvider rootStore={this.rootStore}>
-            {/* Should this be inside App Context Provider? */}
-            <RouterContext.Provider value={this.rootStore.routerStore}>
-                <RouterView viewMap={viewMap}/>
-            </RouterContext.Provider>
-        </AppContextProvider>
+        return (
+            <AppContextProvider rootStore={this.rootStore}>
+                {/* Should this be inside App Context Provider? */}
+                <RouterContext.Provider value={this.rootStore.routerStore}>
+                    <RouterView viewMap={viewMap} />
+                </RouterContext.Provider>
+            </AppContextProvider>
+        )
     }
 }
 

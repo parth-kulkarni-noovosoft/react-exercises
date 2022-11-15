@@ -64,34 +64,36 @@ class AddProduct extends React.Component {
             }
         ];
 
-        return <div className="container">
-            <Form
-                title='Add Product Form'
-                components={components}
-                onSubmit={(data) => {
-                    const emptyFields = ['name', 'description'].some(key => data[key] === '');
-                    if (emptyFields) {
-                        alert('Empty fields are not allowed!');
-                        return false;
-                    }
+        return (
+            <div className="container">
+                <Form
+                    title='Add Product Form'
+                    components={components}
+                    onSubmit={(data) => {
+                        const emptyFields = ['name', 'description'].some(key => data[key] === '');
+                        if (emptyFields) {
+                            alert('Empty fields are not allowed!');
+                            return false;
+                        }
 
-                    const zeroFields = ['price', 'discountedPrice', 'quantity'].some(key => data[key] === 0);
-                    if (zeroFields) {
-                        alert('Zero for price, discountedPrice and quantity are not allowed');
-                        return false;
-                    }
+                        const zeroFields = ['price', 'discountedPrice', 'quantity'].some(key => data[key] === 0);
+                        if (zeroFields) {
+                            alert('Zero for price, discountedPrice and quantity are not allowed');
+                            return false;
+                        }
 
-                    if (data.discountedPrice > data.price) {
-                        alert('Discounted Price cannot be higher than price');
-                        return false;
-                    }
+                        if (data.discountedPrice > data.price) {
+                            alert('Discounted Price cannot be higher than price');
+                            return false;
+                        }
 
-                    productStore.addProduct(data as Omit<IProduct, 'id'>);
-                    routerStore.goTo('home').catch(console.error);
-                    return true;
-                }}
-            />
-        </div>
+                        productStore.addProduct(data as Omit<IProduct, 'id'>);
+                        routerStore.goTo('home').catch(console.error);
+                        return true;
+                    }}
+                />
+            </div>
+        )
     }
 }
 
