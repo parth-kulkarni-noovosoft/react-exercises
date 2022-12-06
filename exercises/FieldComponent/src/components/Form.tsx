@@ -8,14 +8,14 @@ interface IFormProps<T> {
     children: JSX.Element | JSX.Element[]
     store: FormStore<T>
     showSubmit?: boolean
-    submitBtnName?: string
+    submitButtonText?: string
 
     onSubmit: (data: T) => void
 }
 
 function Form<T>({
     showSubmit = true,
-    submitBtnName = 'Save',
+    submitButtonText = 'Save',
     children,
     store,
     onSubmit
@@ -33,7 +33,7 @@ function Form<T>({
                             onSubmit(toJS(store.data))
                         }}
                     >
-                        {submitBtnName}
+                        {submitButtonText}
                     </Button>
                 )}
             </form>

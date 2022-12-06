@@ -16,7 +16,7 @@ const UserDetailForm = () => {
     return (
         <Form
             store={formStore}
-            submitBtnName='Submit'
+            submitButtonText='Submit'
             onSubmit={data => console.log(data)}
         >
             <Field
