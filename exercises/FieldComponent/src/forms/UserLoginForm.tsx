@@ -19,7 +19,8 @@ const UserLoginForm = () => {
         >
             <Field
                 name='email'
-                render={(value, onChange) => (
+                required
+                render={({value, onChange}) => (
                     <Input
                         value={value}
                         onChange={onChange}
@@ -28,7 +29,8 @@ const UserLoginForm = () => {
             />
             <Field
                 name='password'
-                render={(value, onChange) => (
+                required
+                render={({value, onChange}) => (
                     <Input
                         type='password'
                         value={value}

@@ -10,7 +10,7 @@ interface IFormProps<T> {
     showSubmit?: boolean
     submitButtonText?: string
 
-    onSubmit: (data: T) => void
+    onSubmit?: (data: T) => void
 }
 
 function Form<T>({
@@ -28,9 +28,15 @@ function Form<T>({
                 {showSubmit && (
                     <Button
                         type="submit"
+                        disabled={store.isDisabled}
                         onClick={e => {
                             e.preventDefault();
-                            onSubmit(toJS(store.data))
+
+                            const wasSubmitted = store.onSubmit();
+                            if (!wasSubmitted) return;
+
+                            store.setIsDisabled(true);
+                            onSubmit?.(toJS(store.data))
                         }}
                     >
                         {submitButtonText}

@@ -22,7 +22,7 @@ const UserDetailForm = () => {
             <Field
                 name='firstName'
                 label='First Name'
-                render={(value, onChange) => (
+                render={({value, onChange}) => (
                     <Input
                         value={value}
                         onChange={onChange}
@@ -32,7 +32,7 @@ const UserDetailForm = () => {
             <Field
                 name='middleName'
                 label='Middle Name'
-                render={(value, onChange) => (
+                render={({value, onChange}) => (
                     <Input
                         value={value}
                         onChange={onChange}
@@ -42,7 +42,7 @@ const UserDetailForm = () => {
             <Field
                 name='lastName'
                 label='Last Name'
-                render={(value, onChange) => (
+                render={({value, onChange}) => (
                     <Input
                         value={value}
                         onChange={onChange}
