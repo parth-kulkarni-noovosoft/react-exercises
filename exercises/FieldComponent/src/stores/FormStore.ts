@@ -19,6 +19,12 @@ class FormStore<T> {
 
     @action setValue = (key: keyof T, value: T[keyof T]) => this.data[key] = value;
 
+    @action setValueInArray = (key: keyof T, index: number, value: T[keyof T]) => (this.data[key] as T[keyof T][])[index] = value;
+
+    @action addValueInArray = (key: keyof T, value: T[keyof T]) => (this.data[key] as T[keyof T][]).push(value);
+
+    @action removeValueInArray = (key: keyof T, index: number) => (this.data[key] as T[keyof T][]).splice(index, 1);
+
     @action resetValues = () => this.data = this.initialValues;
 
     @action addErrorAt = (key: keyof T, error: string) => this.errorFields[key] = error;
@@ -39,7 +45,16 @@ class FormStore<T> {
         this.resetErrors();
 
         for (const requiredKey of this.requiredFields.values()) {
-            if (this.getValue(requiredKey) === '') {
+            const currentValue = this.getValue(requiredKey);
+
+            if (Array.isArray(currentValue)) {
+                if (currentValue.length === 0) {
+                    this.addErrorAt(requiredKey, 'Add at least 1 value');
+                }
+                if (currentValue.some(data => data === '')) {
+                    this.addErrorAt(requiredKey, 'Fields should be non empty');
+                }
+            } else if (this.getValue(requiredKey) === '') {
                 this.addErrorAt(requiredKey, 'Field cannot be empty');
             }
         }

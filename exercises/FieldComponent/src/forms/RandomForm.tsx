@@ -24,7 +24,7 @@ const RandomForm = () => {
             <Field
                 name='textInput'
                 label='Text Input'
-                render={({ invalid, isDisabled, onChange, value }) => (
+                render={({ invalid, disabled: isDisabled, onChange, value }) => (
                     <Input
                         value={value}
                         disabled={isDisabled}
@@ -37,7 +37,7 @@ const RandomForm = () => {
                 name='requiredTextInput'
                 label='Required Text Input'
                 required
-                render={({ invalid, isDisabled, onChange, value }) => (
+                render={({ invalid, disabled: isDisabled, onChange, value }) => (
                     <Input
                         value={value}
                         disabled={isDisabled}
@@ -49,7 +49,7 @@ const RandomForm = () => {
             <Field
                 name='checkInput'
                 label="is checked?"
-                render={({ value, onChange, isDisabled }) => (
+                render={({ value, onChange, disabled: isDisabled }) => (
                     <Input
                         disabled={isDisabled}
                         type="checkbox"
@@ -61,7 +61,7 @@ const RandomForm = () => {
             <Field
                 name='radioInput'
                 label="A"
-                render={({ value, onChange, isDisabled }) => (
+                render={({ value, onChange, disabled: isDisabled }) => (
                     <Input
                         disabled={isDisabled}
                         type="radio"
@@ -74,7 +74,7 @@ const RandomForm = () => {
             <Field
                 name='radioInput'
                 label="B"
-                render={({ value, onChange, isDisabled }) => (
+                render={({ value, onChange, disabled: isDisabled }) => (
                     <Input
                         disabled={isDisabled}
                         type="radio"
@@ -87,7 +87,7 @@ const RandomForm = () => {
             <Field
                 name='radioInput'
                 label="C"
-                render={({ value, onChange, isDisabled }) => (
+                render={({ value, onChange, disabled: isDisabled }) => (
                     <Input
                         disabled={isDisabled}
                         type="radio"
@@ -100,7 +100,7 @@ const RandomForm = () => {
             <Field
                 name='selectInput'
                 label="Select Input"
-                render={({ value, onChange, isDisabled, invalid }) => (
+                render={({ value, onChange, disabled: isDisabled, invalid }) => (
                     <Select
                         value={value}
                         onChange={onChange}
@@ -113,7 +113,7 @@ const RandomForm = () => {
             <Field
                 name='otherSelectInput'
                 label="Other Select Input"
-                render={({ value, onChange, isDisabled, invalid }) => (
+                render={({ value, onChange, disabled: isDisabled, invalid }) => (
                     <Select
                         value={value}
                         onChange={onChange}
