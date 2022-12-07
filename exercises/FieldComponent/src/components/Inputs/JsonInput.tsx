@@ -1,45 +1,35 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
 import { Button } from "reactstrap";
-import FormStore from "../../stores/FormStore";
-import Label from "../Label";
+import { IRenderData } from "../../interfaces";
+import Field from "../Field";
 
 interface IJsonInputProps<T> {
-    store: FormStore<T>
-    name: keyof T
-    label: string
-    entity: (index: number, deleteCurrent: () => void) => JSX.Element
-    required?: boolean
+    name: string
+    value: T[]
+    entity: (renderData: IRenderData<any> & { index: number }) => JSX.Element
+    disabled: boolean
+    onAdd: () => void
 }
 
-const JsonInput = <T,>({ entity, name, store, label, required }: IJsonInputProps<T>) => {
-
-    useEffect(() => {
-        if (required) {
-            store.addRequiredField(name);
-        }
-    }, [])
-
-    return (
-        <div>
-            <Label label={label} required={required} />
-            {(store.getValue(name) as T[typeof name][])
-                .map((_, index) => (
-                    <React.Fragment key={name.toString() + index.toString()}>
-                        {entity(index, () => store.removeValueInArray(name, index))}
-                    </React.Fragment>
-                ))
-            }
-            <br />
-            <Button
-                type="button"
-                color="primary"
-                onClick={() => {
-                    store.addValueInArray(name, '' as T[keyof T]);
-                }}
-            >Add</Button>
-        </div>
-    );
+const JsonInput = <T,>(props: IJsonInputProps<T>) => {
+    const { entity, name, value, disabled, onAdd } = props;
+    return <div>
+        {value.map((_, index) => (
+            <Field
+                key={index}
+                name={name}
+                index={index}
+                render={(renderData) => entity({ index, ...renderData })}
+            />
+        ))}
+        <br />
+        <Button
+            type="button"
+            color="primary"
+            disabled={disabled}
+            onClick={() => onAdd()}
+        >Add</Button>
+    </div>
 }
 
 export default observer(JsonInput);

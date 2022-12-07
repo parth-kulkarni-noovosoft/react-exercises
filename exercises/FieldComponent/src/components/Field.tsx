@@ -1,71 +1,54 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect } from "react";
-import Label from "./Label";
 import FormStoreContext from "../context/FormStoreContext";
-import FormStore from "../stores/FormStore";
+import { IFieldProps, IRenderData } from "../interfaces";
 
-interface IRenderData<T> {
-    value: T[keyof T]
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    disabled: boolean
-    invalid: boolean
-}
+function Field<T>(props: IFieldProps<T>): JSX.Element {
+    const { storeProps, onChange, render, name, label, required, index } = props;
 
-interface IFieldProps<T> {
-    name: keyof T
-    label?: string
-    index?: number
-    render: (renderData: IRenderData<T>) => JSX.Element
-    onChange?: (value: T[keyof T]) => void
-    storeProps?: FormStore<T>
-    required?: boolean
-}
-
-const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
-
-function Field<T>({
-    storeProps,
-    onChange,
-    render,
-    name,
-    label,
-    required,
-    index
-}: IFieldProps<T>): JSX.Element {
     const store = storeProps ?? useContext(FormStoreContext);
 
     useEffect(() => {
-        if (required) {
-            store.addRequiredField(name);
-        }
+        if (required) store.addRequiredField(name);
     }, [])
 
     const onChangeForInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const currentValue = e.target.type === 'checkbox'
-            ? e.target.checked
-            : e.target.value
+        store.removeErrorAt(name, index);
 
-        if (Array.isArray(store.getValue(name)) && Number.isInteger(index)) {
-            store.setValueInArray(name, index!, currentValue as T[keyof T]);
-        } else {
-            store.setValue(name, currentValue as T[keyof T]);
-        }
-        onChange?.(currentValue as T[keyof T]);
+        const currentValue = (
+            e.target.type === 'checkbox'
+                ? e.target.checked
+                : e.target.value
+        ) as T[keyof T]
+
+        store.setValue(name, currentValue, index);
+        onChange?.(currentValue);
     }
 
     const renderData: IRenderData<T> = {
-        value: Number.isInteger(index) ? store.getValue(name)[index!] : store.getValue(name),
+        value: store.getValue(name, index),
         onChange: onChangeForInput,
         disabled: store.isDisabled,
-        invalid: store.hasErrorsAt(name)
+        invalid: store.hasErrorsAt(name, index),
+        onDelete: () => {
+            store.removeValueInArray(name, index!)
+            store.removeErrorAt(name, index!)
+        },
+        onAdd: () => store.addValueInArray(name)
     }
+
+    const RequiredSymbol = required
+        ? <span className="text-danger">*</span>
+        : null;
+
+    const Label = label && <label>{label}{RequiredSymbol}</label>
 
     return (
         <div>
-            {label && <Label label={label} required={required} />}
+            {Label}
             {render(renderData)}
-            {store.hasErrorsAt(name)
-                ? <div><small className="text-danger">{store.getError(name)}</small></div>
+            {renderData.invalid
+                ? <div><small className="text-danger">{store.getError(name, index)}</small></div>
                 : null
             }
         </div>

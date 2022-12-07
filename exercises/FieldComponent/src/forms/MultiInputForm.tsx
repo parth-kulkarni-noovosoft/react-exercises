@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import Field from "../components/Field";
 import Form from "../components/Form";
 import JsonInput from "../components/Inputs/JsonInput";
@@ -9,7 +9,7 @@ import { Trash } from 'react-bootstrap-icons';
 class MultiInputFormData {
     continent = '';
     name = '';
-    hobbies: string[] = [];
+    hobbies: string[] = [''];
 
     constructor() {
         makeAutoObservable(this);
@@ -27,48 +27,57 @@ const MultiInputForm = () => {
             <Field
                 name='continent'
                 label="Continent"
-                render={(renderData) => (
+                required
+                render={({ disabled, invalid, onChange, value }) => (
                     <Input
-                        {...renderData}
+                        value={value}
+                        onChange={onChange}
+                        disabled={disabled}
+                        invalid={invalid}
                     />
                 )}
             />
             <Field
                 name='name'
                 label="Name"
-                render={(renderData) => (
+                required
+                render={({ disabled, invalid, onChange, value }) => (
                     <Input
-                        {...renderData}
+                        value={value}
+                        onChange={onChange}
+                        disabled={disabled}
+                        invalid={invalid}
                     />
                 )}
             />
 
-            <JsonInput
+            <Field
                 name='hobbies'
                 label='Hobbies'
-                required
-                store={formStore}
-                entity={(index, deleteCurrent) => (
-                    <Field
+                render={({ value, disabled, onAdd }) => (
+                    <JsonInput
+                        value={value}
                         name='hobbies'
-                        index={index}
-                        render={(renderData) => (
-                            <>
-                                <Input
-                                    {...renderData}
-                                    style={{ width: '80%', display: 'inline' }}
-                                />
-                                <Button
-                                    type="button"
-                                    onClick={() => deleteCurrent()}
-                                    disabled={renderData.disabled}
-                                >
-                                    <Trash />
-                                </Button>
-                            </>
-                        )}
-                    />
-                )}
+                        disabled={disabled}
+                        onAdd={onAdd}
+                        entity={({ disabled, index, invalid, onChange, onDelete, value }) => (<>
+                            <Input
+                                disabled={disabled}
+                                invalid={invalid}
+                                onChange={onChange}
+                                value={value as string | number}
+                                style={{ width: '80%', display: 'inline' }}
+                            />
+                            <Button
+                                type="button"
+                                onClick={() => onDelete()}
+                                disabled={disabled || index === 0}
+                            >
+                                <Trash />
+                            </Button>
+                        </>)}
+                    />)
+                }
             />
         </Form>
     )
