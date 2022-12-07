@@ -10,6 +10,7 @@ class MultiInputFormData {
     continent = '';
     name = '';
     hobbies: string[] = [''];
+    items: string[] = [''];
 
     constructor() {
         makeAutoObservable(this);
@@ -79,6 +80,37 @@ const MultiInputForm = () => {
                     />)
                 }
             />
+
+            <Field
+                name='items'
+                label='Items'
+                required
+                render={({ value, disabled, onAdd }) => (
+                    <JsonInput
+                        value={value}
+                        name='items'
+                        disabled={disabled}
+                        onAdd={onAdd}
+                        entity={({ disabled, index, invalid, onChange, onDelete, value }) => (<>
+                            <Input
+                                disabled={disabled}
+                                invalid={invalid}
+                                onChange={onChange}
+                                value={value as string | number}
+                                style={{ width: '80%', display: 'inline' }}
+                            />
+                            <Button
+                                type="button"
+                                onClick={() => onDelete()}
+                                disabled={disabled || index === 0}
+                            >
+                                <Trash />
+                            </Button>
+                        </>)}
+                    />)
+                }
+            />
+
         </Form>
     )
 }
