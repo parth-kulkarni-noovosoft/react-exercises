@@ -72,7 +72,7 @@ const MultiInputForm = () => {
                             <Button
                                 type="button"
                                 onClick={() => onDelete()}
-                                disabled={disabled || index === 0}
+                                disabled={disabled}
                             >
                                 <Trash />
                             </Button>
@@ -102,7 +102,7 @@ const MultiInputForm = () => {
                             <Button
                                 type="button"
                                 onClick={() => onDelete()}
-                                disabled={disabled || index === 0}
+                                disabled={disabled}
                             >
                                 <Trash />
                             </Button>
