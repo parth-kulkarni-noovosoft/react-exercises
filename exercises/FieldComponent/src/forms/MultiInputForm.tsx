@@ -3,8 +3,7 @@ import Field from "../components/Field";
 import Form from "../components/Form";
 import JsonInput from "../components/Inputs/JsonInput";
 import FormStore from "../stores/FormStore";
-import { Button, Input } from 'reactstrap';
-import { Trash } from 'react-bootstrap-icons';
+import { Input } from 'reactstrap';
 
 class MultiInputFormData {
     continent = '';
@@ -55,28 +54,21 @@ const MultiInputForm = () => {
             <Field
                 name='hobbies'
                 label='Hobbies'
-                render={({ value, disabled, onChange: onChangeArray }) => (
+                render={({ value, disabled, onChange }) => (
                     <JsonInput
                         value={value}
                         name='hobbies'
                         disabled={disabled}
-                        onAdd={() => onChangeArray([...value, ''])}
-                        entity={({ disabled, invalid, onChange, value: elementValue, totalItems, index }) => (<>
+                        onChange={onChange}
+                        entity={({ disabled, invalid, onChange, value }) => (
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
                                 onChange={(e) => onChange(e.target.value)}
-                                value={elementValue as string | number}
+                                value={value as string | number}
                                 style={{ width: '80%', display: 'inline' }}
                             />
-                            <Button
-                                type="button"
-                                onClick={() => onChangeArray((value as string[]).filter((_, idx) => idx !== index))}
-                                disabled={disabled || totalItems === 1}
-                            >
-                                <Trash />
-                            </Button>
-                        </>)}
+                        )}
                     />)
                 }
             />
@@ -85,28 +77,21 @@ const MultiInputForm = () => {
                 name='items'
                 label='Items'
                 required
-                render={({ value, disabled, onChange: onChangeArray }) => (
+                render={({ value, disabled, onChange }) => (
                     <JsonInput
                         value={value}
                         name='items'
                         disabled={disabled}
-                        onAdd={() => onChangeArray([...value, ''])}
-                        entity={({ disabled, index, invalid, onChange, value: elementValue, totalItems }) => (<>
+                        onChange={onChange}
+                        entity={({ disabled, invalid, onChange, value }) => (
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
                                 onChange={(e) => onChange(e.target.value)}
-                                value={elementValue as string | number}
+                                value={value}
                                 style={{ width: '80%', display: 'inline' }}
                             />
-                            <Button
-                                type="button"
-                                onClick={() => onChangeArray((value as string[]).filter((_, idx) => idx !== index))}
-                                disabled={disabled || totalItems === 1}
-                            >
-                                <Trash />
-                            </Button>
-                        </>)}
+                        )}
                     />)
                 }
             />

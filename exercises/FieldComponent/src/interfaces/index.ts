@@ -1,4 +1,3 @@
-import type React from 'react';
 import type FormStore from "../stores/FormStore"
 
 export interface IRenderData<T> {

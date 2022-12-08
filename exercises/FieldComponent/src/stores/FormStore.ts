@@ -85,11 +85,7 @@ class FormStore<T> {
             }
         }
 
-        if (this.hasError()) {
-            return false;
-        }
-
-        return true;
+        return !this.hasError();
     }
 }
 
