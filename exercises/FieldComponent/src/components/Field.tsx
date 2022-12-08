@@ -30,11 +30,10 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         onChange: onChangeForInput,
         disabled: store.isDisabled,
         invalid: store.hasErrorsAt(name, index),
-        onDelete: () => {
-            store.removeValueInArray(name, index!)
-            store.removeErrorAt(name, index!)
-        },
-        onAdd: () => store.addValueInArray(name)
+        updateValue: (data: T[keyof T]) => {
+            store.removeErrorAt(name, index);
+            store.setValue(name, data, index)
+        }
     }
 
     const RequiredSymbol = required

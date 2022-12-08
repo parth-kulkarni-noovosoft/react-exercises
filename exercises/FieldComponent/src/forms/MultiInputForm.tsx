@@ -55,24 +55,27 @@ const MultiInputForm = () => {
             <Field
                 name='hobbies'
                 label='Hobbies'
-                render={({ value, disabled, onAdd }) => (
+                render={({ value, disabled, updateValue }) => (
                     <JsonInput
                         value={value}
                         name='hobbies'
                         disabled={disabled}
-                        onAdd={onAdd}
-                        entity={({ disabled, index, invalid, onChange, onDelete, value }) => (<>
+                        onAdd={() => updateValue([...value, ''])}
+                        entity={({ disabled, invalid, onChange, value: elementValue, totalItems, index, updateValue: updateElementValue }) => (<>
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
                                 onChange={onChange}
-                                value={value as string | number}
+                                value={elementValue as string | number}
                                 style={{ width: '80%', display: 'inline' }}
                             />
                             <Button
                                 type="button"
-                                onClick={() => onDelete()}
-                                disabled={disabled}
+                                onClick={() => {
+                                    updateElementValue(elementValue)
+                                    updateValue((value as string[]).filter((_, idx) => idx !== index))
+                                }}
+                                disabled={disabled || totalItems === 1}
                             >
                                 <Trash />
                             </Button>
@@ -85,24 +88,27 @@ const MultiInputForm = () => {
                 name='items'
                 label='Items'
                 required
-                render={({ value, disabled, onAdd }) => (
+                render={({ value, disabled, updateValue }) => (
                     <JsonInput
                         value={value}
                         name='items'
                         disabled={disabled}
-                        onAdd={onAdd}
-                        entity={({ disabled, index, invalid, onChange, onDelete, value }) => (<>
+                        onAdd={() => updateValue([...value, ''])}
+                        entity={({ disabled, index, invalid, onChange, value: elementValue, totalItems, updateValue: updateElementValue }) => (<>
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
                                 onChange={onChange}
-                                value={value as string | number}
+                                value={elementValue as string | number}
                                 style={{ width: '80%', display: 'inline' }}
                             />
                             <Button
                                 type="button"
-                                onClick={() => onDelete()}
-                                disabled={disabled}
+                                onClick={() => {
+                                    updateElementValue(elementValue)
+                                    updateValue((value as string[]).filter((_, idx) => idx !== index))
+                                }}
+                                disabled={disabled || totalItems === 1}
                             >
                                 <Trash />
                             </Button>

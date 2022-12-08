@@ -4,10 +4,9 @@ import type FormStore from "../stores/FormStore"
 export interface IRenderData<T> {
     value: T[keyof T]
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    onDelete: () => void
-    onAdd: () => void
     disabled: boolean
     invalid: boolean
+    updateValue: (value: T[keyof T]) => void
 }
 
 export interface IFieldProps<T> {

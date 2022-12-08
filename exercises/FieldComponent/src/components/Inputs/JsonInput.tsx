@@ -6,7 +6,10 @@ import Field from "../Field";
 interface IJsonInputProps<T> {
     name: string
     value: T[]
-    entity: (renderData: IRenderData<any> & { index: number }) => JSX.Element
+    entity: (renderData: IRenderData<any> & {
+        index: number
+        totalItems: number
+    }) => JSX.Element
     disabled: boolean
     onAdd: () => void
 }
@@ -19,7 +22,11 @@ const JsonInput = <T,>(props: IJsonInputProps<T>) => {
                 key={index}
                 name={name}
                 index={index}
-                render={(renderData) => entity({ index, ...renderData })}
+                render={(renderData) => entity({
+                    index,
+                    totalItems: value.length,
+                    ...renderData
+                })}
             />
         ))}
         <br />
@@ -27,7 +34,7 @@ const JsonInput = <T,>(props: IJsonInputProps<T>) => {
             type="button"
             color="primary"
             disabled={disabled}
-            onClick={() => onAdd()}
+            onClick={onAdd}
         >Add</Button>
     </div>
 }

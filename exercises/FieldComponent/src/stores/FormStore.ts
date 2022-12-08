@@ -36,10 +36,6 @@ class FormStore<T> {
         this.data[key] = value
     };
 
-    @action addValueInArray = (key: keyof T, value?: T[keyof T]) => (this.data[key] as T[keyof T][]).push(value ?? '' as T[keyof T]);
-
-    @action removeValueInArray = (key: keyof T, index: number) => (this.data[key] as T[keyof T][]).splice(index, 1);
-
     @action resetValues = () => this.data = this.initialValues;
 
     @action addErrorAt = (key: keyof T, error: string, index?: number) => this.errorFields[this.getKey(key, index)] = error;
