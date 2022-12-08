@@ -40,7 +40,17 @@ class FormStore<T> {
 
     @action addErrorAt = (key: keyof T, error: string, index?: number) => this.errorFields[this.getKey(key, index)] = error;
 
-    @action removeErrorAt = (key: keyof T, index?: number) => delete this.errorFields[this.getKey(key, index)];
+    @action removeErrorAt = (key: keyof T, index?: number) => {
+        if (index !== undefined) {
+            return delete this.errorFields[this.getKey(key, index)];
+        }
+
+        for (const errorFieldKey in this.errorFields) {
+            if (errorFieldKey.startsWith(String(key))) {
+                delete this.errorFields[errorFieldKey];
+            }
+        }
+    }
 
     @action resetErrors = () => this.errorFields = {};
 

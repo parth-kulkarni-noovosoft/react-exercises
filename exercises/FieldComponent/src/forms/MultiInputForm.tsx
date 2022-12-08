@@ -1,4 +1,4 @@
-import { makeAutoObservable, toJS } from "mobx";
+import { makeAutoObservable } from "mobx";
 import Field from "../components/Field";
 import Form from "../components/Form";
 import JsonInput from "../components/Inputs/JsonInput";
@@ -61,7 +61,7 @@ const MultiInputForm = () => {
                         name='hobbies'
                         disabled={disabled}
                         onAdd={() => updateValue([...value, ''])}
-                        entity={({ disabled, invalid, onChange, value: elementValue, totalItems, index, updateValue: updateElementValue }) => (<>
+                        entity={({ disabled, invalid, onChange, value: elementValue, totalItems, index }) => (<>
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
@@ -71,10 +71,7 @@ const MultiInputForm = () => {
                             />
                             <Button
                                 type="button"
-                                onClick={() => {
-                                    updateElementValue(elementValue)
-                                    updateValue((value as string[]).filter((_, idx) => idx !== index))
-                                }}
+                                onClick={() => updateValue((value as string[]).filter((_, idx) => idx !== index))}
                                 disabled={disabled || totalItems === 1}
                             >
                                 <Trash />
@@ -94,7 +91,7 @@ const MultiInputForm = () => {
                         name='items'
                         disabled={disabled}
                         onAdd={() => updateValue([...value, ''])}
-                        entity={({ disabled, index, invalid, onChange, value: elementValue, totalItems, updateValue: updateElementValue }) => (<>
+                        entity={({ disabled, index, invalid, onChange, value: elementValue, totalItems }) => (<>
                             <Input
                                 disabled={disabled}
                                 invalid={invalid}
@@ -104,10 +101,7 @@ const MultiInputForm = () => {
                             />
                             <Button
                                 type="button"
-                                onClick={() => {
-                                    updateElementValue(elementValue)
-                                    updateValue((value as string[]).filter((_, idx) => idx !== index))
-                                }}
+                                onClick={() => updateValue((value as string[]).filter((_, idx) => idx !== index))}
                                 disabled={disabled || totalItems === 1}
                             >
                                 <Trash />

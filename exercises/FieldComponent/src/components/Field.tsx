@@ -31,7 +31,7 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         disabled: store.isDisabled,
         invalid: store.hasErrorsAt(name, index),
         updateValue: (data: T[keyof T]) => {
-            store.removeErrorAt(name, index);
+            store.removeErrorAt(name);
             store.setValue(name, data, index)
         }
     }
