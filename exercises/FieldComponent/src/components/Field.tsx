@@ -12,16 +12,19 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         if (required) store.addRequiredField(name);
     }, [])
 
-    const onChangeForInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (data: T[keyof T]) => {
         store.removeErrorAt(name, index);
+        store.setValue(name, data, index);
+    }
 
+    const onChangeForInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const currentValue = (
             e.target.type === 'checkbox'
                 ? e.target.checked
                 : e.target.value
         ) as T[keyof T]
 
-        store.setValue(name, currentValue, index);
+        updateValue(currentValue);
         onChange?.(currentValue);
     }
 
@@ -30,10 +33,7 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         onChange: onChangeForInput,
         disabled: store.isDisabled,
         invalid: store.hasErrorsAt(name, index),
-        updateValue: (data: T[keyof T]) => {
-            store.removeErrorAt(name);
-            store.setValue(name, data, index)
-        }
+        updateValue
     }
 
     const RequiredSymbol = required
