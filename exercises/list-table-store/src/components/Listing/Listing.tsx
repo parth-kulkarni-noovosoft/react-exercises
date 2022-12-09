@@ -4,13 +4,13 @@ import { CaretLeft, CaretRight } from "react-bootstrap-icons";
 import { ButtonGroup, Button, Container } from "reactstrap";
 import ListTableStore from "../../stores/ListTableStore";
 
-interface ITableProps<T> {
+interface IListingProps<T> {
     listStore: ListTableStore<T>
     render: (data: T[]) => JSX.Element | JSX.Element[]
 }
 
 @observer
-class Listing<T> extends React.Component<ITableProps<T>> {
+class Listing<T> extends React.Component<IListingProps<T>> {
     render(): React.ReactNode {
         const { listStore } = this.props;
         if (!listStore.entities) return null;
