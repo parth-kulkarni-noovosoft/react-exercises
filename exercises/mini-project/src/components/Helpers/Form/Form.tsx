@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import FormStoreContext from "../../context/FormStoreContext";
-import FormStore from "../../stores/FormStore";
+import FormStoreContext from "../../../context/FormStoreContext";
+import FormStore from "../../../stores/FormStore";
 import { Button } from 'reactstrap';
 import { toJS } from "mobx";
 

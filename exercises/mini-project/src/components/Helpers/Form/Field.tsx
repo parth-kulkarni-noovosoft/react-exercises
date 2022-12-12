@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { useContext, useEffect } from "react";
-import FormStoreContext from "../../context/FormStoreContext";
-import { IFieldProps, IRenderData } from "../../interfaces";
+import FormStoreContext from "../../../context/FormStoreContext";
+import { IFieldProps, IRenderData } from "../../../interfaces";
 
 function Field<T>(props: IFieldProps<T>): JSX.Element {
     const { storeProps, onChange, render, name, label, required, index } = props;

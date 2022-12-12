@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
-import Field from "../components/Form/Field";
-import Form from "../components/Form/Form";
-import JsonInput from "../components/Inputs/JsonInput";
-import FormStore from "../stores/FormStore";
+import Field from "../Helpers/Form/Field";
+import Form from "../Helpers/Form/Form";
+import JsonInput from "../Helpers/Inputs/JsonInput";
+import FormStore from "../../stores/FormStore";
 import { Input } from 'reactstrap';
 
 class MultiInputFormData {

@@ -35,7 +35,6 @@ class ListTableStore<T> {
 
     @action setData = (data: Paginated<T>) => {
         this.setIsLoading(false);
-        this.pageNumber = 1;
         this.entities = data[this.name];
         this.totalPages = data.total / this.pageSize;
     }
@@ -49,11 +48,13 @@ class ListTableStore<T> {
 
     @action setFilterQuery = (filterQuery: string) => {
         this.filterQuery = filterQuery;
+        this.pageNumber = 1;
         this.fetchData();
     }
 
     @action setSearchQuery = (searchQuery: string) => {
         this.searchQuery = searchQuery;
+        this.pageNumber = 1;
         this.fetchData();
     };
 }

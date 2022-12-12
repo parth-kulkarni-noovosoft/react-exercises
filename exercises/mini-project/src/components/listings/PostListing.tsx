@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge, Input } from "reactstrap";
-import { RootStoreContext } from "../context/RootStoreContext";
-import Listing from "./Listing/Listing";
-import Table from "./Table/Table";
+import { Badge } from "reactstrap";
+import { RootStoreContext } from "../../context/RootStoreContext";
+import Listing from "../Helpers/Listing/Listing";
+import Table from "../Helpers/Table/Table";
 
 @observer
 class PostListing extends React.Component {
@@ -17,13 +17,9 @@ class PostListing extends React.Component {
         return (
             <Listing
                 listStore={postListingStore}
-                controls={({ onChange, value }) => (
-                    <Input
-                        value={value.searchQuery}
-                        onChange={(e) => onChange({ name: 'searchQuery', value: e.target.value })}
-                    />
-                )}
-
+                configuration={{
+                    displaySearch: false
+                }}
                 render={(posts) => (
                     <Table
                         tableContent={posts}

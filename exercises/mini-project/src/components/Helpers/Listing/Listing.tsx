@@ -1,15 +1,17 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { CaretLeft, CaretRight } from "react-bootstrap-icons";
-import { ButtonGroup, Button, Container } from "reactstrap";
-import ListTableStore from "../../stores/ListTableStore";
+import { ButtonGroup, Button, Container, Input } from "reactstrap";
+import ListTableStore from "../../../stores/ListTableStore";
+import Select from "../Inputs/Select";
 
 interface IListingProps<T> {
     listStore: ListTableStore<T>
-    controls: (data: {
-        value: { searchQuery: string, filterQuery: string }
-        onChange: (event: { name: 'searchQuery' | 'filterQuery', value: string }) => void
-    }) => JSX.Element | JSX.Element[]
+    configuration?: {
+        displaySearch?: boolean,
+        displayFilter?: boolean,
+        options?: string[]
+    }
     render: (data: T[]) => JSX.Element | JSX.Element[]
 }
 
@@ -20,19 +22,33 @@ class Listing<T> extends React.Component<IListingProps<T>> {
         const { listStore } = this.props;
         if (!listStore.entities) return null;
 
+        const configuration = {
+            displayFilter: false,
+            displaySearch: true,
+            options: [],
+            ...this.props.configuration
+        }
+
+        const SearchBar = configuration.displaySearch
+            ? (<Input
+                value={listStore.searchQuery}
+                onChange={(e) => listStore.setSearchQuery(e.target.value)}
+            />)
+            : null;
+
+        const FilterDropDown = configuration.displayFilter
+            ? (<Select
+                isDisabled={false}
+                onChange={(value) => listStore.setFilterQuery(value)}
+                value={listStore.filterQuery}
+                options={configuration.options}
+            />)
+            : null;
+
         return (
-            <Container>
-                {this.props.controls({
-                    onChange: (event) => {
-                        event.name === 'searchQuery'
-                            ? listStore.setSearchQuery(event.value)
-                            : listStore.setFilterQuery(event.value)
-                    },
-                    value: {
-                        filterQuery: listStore.filterQuery,
-                        searchQuery: listStore.searchQuery
-                    }
-                })}
+            <Container className="py-2">
+                {SearchBar}
+                {FilterDropDown}
                 {
                     listStore.isLoading
                         ? <div>Loading pls wait...</div>

@@ -1,10 +1,8 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { Input } from "reactstrap";
-import { RootStoreContext } from "../context/RootStoreContext";
-import Select from "./Inputs/Select";
-import Listing from "./Listing/Listing";
-import Table from "./Table/Table";
+import { RootStoreContext } from "../../context/RootStoreContext";
+import Listing from "../Helpers/Listing/Listing";
+import Table from "../Helpers/Table/Table";
 
 @observer
 class ProductListing extends React.Component {
@@ -19,6 +17,10 @@ class ProductListing extends React.Component {
         return (
             <Listing
                 listStore={productStore.productsListingStore}
+                configuration={{
+                    displayFilter: true,
+                    options: productStore.categories
+                }}
                 render={(products) => (
                     <Table
                         tableContent={products}
@@ -42,18 +44,6 @@ class ProductListing extends React.Component {
                         ]}
                     />
                 )}
-                controls={({ onChange, value }) => (<>
-                    <Input
-                        value={value.searchQuery}
-                        onChange={(e) => onChange({ name: 'searchQuery', value: e.target.value })}
-                    />
-                    <Select
-                        isDisabled={false}
-                        onChange={(value) => onChange({ name: 'filterQuery', value })}
-                        value={value.filterQuery}
-                        options={productStore.categories}
-                    />
-                </>)}
             />
         )
     }

@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Trash } from "react-bootstrap-icons";
 import { Button } from "reactstrap";
-import { IJsonInputProps } from "../../interfaces";
+import { IJsonInputProps } from "../../../interfaces";
 import Field from "../Form/Field";
 
 const getInitialValue = <T,>(arr: T[]): T => {

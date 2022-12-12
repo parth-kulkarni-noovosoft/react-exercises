@@ -4,9 +4,7 @@ import Networking from "../networking"
 import ListTableStore from "./ListTableStore"
 import RootStore from "./RootStore"
 
-
 class ProductStore {
-    @observable product: IProduct | null = null;
     @observable categories: string[] = [];
     public productsListingStore: ListTableStore<IProduct>;
 
@@ -47,10 +45,10 @@ class ProductStore {
         let baseUrl = 'products/';
 
         if (searchQuery !== '') {
-            baseUrl += 'search'
+            baseUrl = 'products/search'
             searchParams.append('q', searchQuery)
         } else if (filterQuery !== '' && filterQuery !== 'All') {
-            baseUrl += `category/${filterQuery}`
+            baseUrl = `products/category/${filterQuery}`
         }
 
         const url = `${baseUrl}?${searchParams.toString()}`
