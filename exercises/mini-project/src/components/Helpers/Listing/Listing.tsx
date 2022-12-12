@@ -29,26 +29,28 @@ class Listing<T> extends React.Component<IListingProps<T>> {
             ...this.props.configuration
         }
 
-        const SearchBar = configuration.displaySearch
-            ? (<Input
+        const SearchBar = (<>
+            <div>Search</div>
+            <Input
                 value={listStore.searchQuery}
                 onChange={(e) => listStore.setSearchQuery(e.target.value)}
-            />)
-            : null;
+            />
+        </>)
 
-        const FilterDropDown = configuration.displayFilter
-            ? (<Select
+        const FilterDropDown = (<>
+            <div>Filter</div>
+            <Select
                 isDisabled={false}
                 onChange={(value) => listStore.setFilterQuery(value)}
                 value={listStore.filterQuery}
                 options={configuration.options}
-            />)
-            : null;
+            />
+        </>)
 
         return (
             <Container className="py-2">
-                {SearchBar}
-                {FilterDropDown}
+                {configuration.displaySearch && SearchBar}
+                {configuration.displayFilter && FilterDropDown}
                 {
                     listStore.isLoading
                         ? <div>Loading pls wait...</div>
