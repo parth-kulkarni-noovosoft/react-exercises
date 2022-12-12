@@ -14,10 +14,10 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
     }, [])
 
     const renderData: IRenderData<T> = {
-        value: store.getValue(name, index),
+        value: store.getValue(name),
         onChange: (data) => {
             store.removeErrorAt(name, index);
-            store.setValue(name, data, index);
+            store.setValue(name, data);
             onChange?.(data);
         },
         disabled: store.isDisabled,

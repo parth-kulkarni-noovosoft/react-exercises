@@ -14,21 +14,29 @@ const getInitialValue = <T,>(arr: T[]): T => {
 }
 
 const JsonInput = <T,>(props: IJsonInputProps<T>) => {
-    const { entity, name, value, disabled, onChange } = props;
-    if (!Array.isArray(value)) throw Error('value is not array');
+    const { entity, name, value: itemsArray, disabled, onChange } = props;
+    if (!Array.isArray(itemsArray)) throw Error('value is not array');
 
     return <div>
-        {value.map((_, index) => (
+        {itemsArray.map((_, index) => (
             <Field
                 key={index}
                 name={name}
                 index={index}
                 render={(renderData) => (<>
-                    {entity(renderData)}
+                    {entity({
+                        ...renderData,
+                        value: itemsArray[index],
+                        onChange: (value) => {
+                            onChange(itemsArray.map(
+                                (data, i) => (i === index ? value : data) as T
+                            ))
+                        },
+                    })}
                     <Button
                         type="button"
-                        onClick={() => onChange(value.filter((_, idx) => idx !== index))}
-                        disabled={disabled || value.length === 1}
+                        onClick={() => onChange(itemsArray.filter((_, idx) => idx !== index))}
+                        disabled={disabled || itemsArray.length === 1}
                     >
                         <Trash />
                     </Button>
@@ -40,7 +48,7 @@ const JsonInput = <T,>(props: IJsonInputProps<T>) => {
             type="button"
             color="primary"
             disabled={disabled}
-            onClick={() => onChange([...value, getInitialValue(value)])}
+            onClick={() => onChange([...itemsArray, getInitialValue(itemsArray)])}
         >Add</Button>
     </div>
 }

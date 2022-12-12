@@ -17,24 +17,11 @@ class FormStore<T> {
         return `${String(key)}${index === undefined ? '' : `.${index}`}`
     }
 
-    getValue = (key: keyof T, index?: number) => {
-        if (index !== undefined) {
-            return (this.data[key] as T[typeof key][])[index]
-        }
-
-        return this.data[key];
-    }
+    getValue = (key: keyof T) => this.data[key];
 
     @action setIsDisabled = (isDisabled: boolean) => this.isDisabled = isDisabled;
 
-    @action setValue = (key: keyof T, value: T[keyof T], index?: number) => {
-        if (index !== undefined) {
-            (this.data[key] as T[typeof key][])[index] = value;
-            return;
-        }
-
-        this.data[key] = value
-    };
+    @action setValue = (key: keyof T, value: T[keyof T]) => this.data[key] = value;
 
     @action resetValues = () => this.data = this.initialValues;
 
