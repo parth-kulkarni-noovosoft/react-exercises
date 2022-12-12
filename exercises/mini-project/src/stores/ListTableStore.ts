@@ -1,17 +1,19 @@
 import { action, makeObservable, observable } from "mobx";
-import { Paginated } from "../interfaces";
+import { Paginated, QueryData } from "../interfaces";
 
 class ListTableStore<T> {
     @observable entities: T[] = []
-    @observable pageSize = 10
+    @observable pageSize = 10;
     @observable pageNumber = 1;
     @observable totalPages = 1;
-    @observable searchQuery = '';
     @observable isLoading = false;
+
+    @observable searchQuery = '';
+    @observable filterQuery = 'All';
 
     constructor(
         public name: string,
-        public fetcher: (pageNumber: number, searchQuery: string) => Promise<Paginated<T>>
+        public fetcher: (queryData: QueryData<T>) => Promise<Paginated<T>>
     ) {
         makeObservable(this);
 
@@ -20,14 +22,20 @@ class ListTableStore<T> {
 
     fetchData = async () => {
         this.setIsLoading(true);
-        const data = await this.fetcher(this.pageNumber, this.searchQuery);
+        const data = await this.fetcher({
+            filterQuery: this.filterQuery,
+            pageNumber: this.pageNumber,
+            pageSize: this.pageSize,
+            searchQuery: this.searchQuery
+        });
         this.setData(data);
     }
 
-    @action setIsLoading = (isLoading: boolean) => this.isLoading = isLoading; 
+    @action setIsLoading = (isLoading: boolean) => this.isLoading = isLoading;
 
     @action setData = (data: Paginated<T>) => {
         this.setIsLoading(false);
+        this.pageNumber = 1;
         this.entities = data[this.name];
         this.totalPages = data.total / this.pageSize;
     }
@@ -39,11 +47,15 @@ class ListTableStore<T> {
 
     @action setPageSize = (pageSize: number) => this.pageSize = pageSize;
 
+    @action setFilterQuery = (filterQuery: string) => {
+        this.filterQuery = filterQuery;
+        this.fetchData();
+    }
+
     @action setSearchQuery = (searchQuery: string) => {
         this.searchQuery = searchQuery;
         this.fetchData();
     };
-
 }
 
 export default ListTableStore;

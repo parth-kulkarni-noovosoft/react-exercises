@@ -1,4 +1,5 @@
 import type FormStore from "../stores/FormStore"
+import type ListTableStore from "../stores/ListTableStore"
 
 export type Paginated<T> = {
     [K: string]: T[]
@@ -43,7 +44,7 @@ export interface IFieldProps<T> {
     label?: string
     index?: number
     render: (renderData: IRenderData<T>) => JSX.Element
-    onChange?: (value: T[keyof T]) => void
+    onChange?: (event: { value: T[keyof T], name: keyof T }) => void
     storeProps?: FormStore<T>
     required?: boolean
 }
@@ -55,3 +56,8 @@ export interface IJsonInputProps<T> {
     disabled: boolean
     onChange: (data: T[]) => void
 }
+
+export type QueryData<T = unknown> = Pick<
+    ListTableStore<T>,
+    'pageNumber' | 'pageSize' | 'searchQuery' | 'filterQuery'
+>

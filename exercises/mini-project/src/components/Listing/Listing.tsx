@@ -1,21 +1,18 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { CaretLeft, CaretRight } from "react-bootstrap-icons";
-import { ButtonGroup, Button, Container, Input } from "reactstrap";
-import FormStore from "../../stores/FormStore";
+import { ButtonGroup, Button, Container } from "reactstrap";
 import ListTableStore from "../../stores/ListTableStore";
-import Field from "../Form/Field";
 
 interface IListingProps<T> {
     listStore: ListTableStore<T>
+    controls: (data: {
+        value: { searchQuery: string, filterQuery: string }
+        onChange: (event: { name: 'searchQuery' | 'filterQuery', value: string }) => void
+    }) => JSX.Element | JSX.Element[]
     render: (data: T[]) => JSX.Element | JSX.Element[]
 }
 
-class QueryData {
-    query = ''
-}
-
-const formStore = new FormStore(new QueryData());
 
 @observer
 class Listing<T> extends React.Component<IListingProps<T>> {
@@ -25,20 +22,17 @@ class Listing<T> extends React.Component<IListingProps<T>> {
 
         return (
             <Container>
-                <Field
-                    label="Search"
-                    storeProps={formStore}
-                    name='query'
-                    onChange={(data) => listStore.setSearchQuery(data)}
-                    render={({ disabled, invalid, onChange, value }) => (
-                        <Input
-                            value={value}
-                            invalid={invalid}
-                            onChange={(e) => onChange(e.target.value)}
-                            disabled={disabled}
-                        />
-                    )}
-                />
+                {this.props.controls({
+                    onChange: (event) => {
+                        event.name === 'searchQuery'
+                            ? listStore.setSearchQuery(event.value)
+                            : listStore.setFilterQuery(event.value)
+                    },
+                    value: {
+                        filterQuery: listStore.filterQuery,
+                        searchQuery: listStore.searchQuery
+                    }
+                })}
                 {
                     listStore.isLoading
                         ? <div>Loading pls wait...</div>

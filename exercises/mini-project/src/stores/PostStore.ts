@@ -1,5 +1,5 @@
 import { makeObservable, observable } from "mobx";
-import { IPost, Paginated } from "../interfaces";
+import { IPost, Paginated, QueryData } from "../interfaces";
 import Networking from "../networking";
 import ListTableStore from "./ListTableStore";
 import RootStore from "./RootStore";
@@ -15,8 +15,12 @@ class PostStore {
         this.postListingStore = new ListTableStore('posts', this.getPosts);
     }
 
-    getPosts = async (pageNumber: number, searchQuery: string) => {
-        const pageSize = this.postListingStore?.pageSize ?? 10;
+    getPosts = async (queryData: QueryData) => {
+        const {
+            pageNumber,
+            pageSize,
+            searchQuery
+        } = queryData;
 
         const queryParams = `limit=${pageSize}&skip=${(pageNumber - 1) * pageSize}`;
         const url = searchQuery === ''

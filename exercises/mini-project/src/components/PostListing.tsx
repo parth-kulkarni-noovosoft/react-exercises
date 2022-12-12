@@ -1,8 +1,9 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { List } from "reactstrap";
+import { Badge, Input } from "reactstrap";
 import { RootStoreContext } from "../context/RootStoreContext";
 import Listing from "./Listing/Listing";
+import Table from "./Table/Table";
 
 @observer
 class PostListing extends React.Component {
@@ -16,12 +17,31 @@ class PostListing extends React.Component {
         return (
             <Listing
                 listStore={postListingStore}
-                render={(products) => (
-                    <List
-                        type='unstyled'
-                    >
-                        {products.map(d => <div key={d.id}>{d.id}: {d.title}</div>)}
-                    </List>
+                controls={({ onChange, value }) => (
+                    <Input
+                        value={value.searchQuery}
+                        onChange={(e) => onChange({ name: 'searchQuery', value: e.target.value })}
+                    />
+                )}
+
+                render={(posts) => (
+                    <Table
+                        tableContent={posts}
+                        colConfigs={[
+                            {
+                                heading: 'Title',
+                                selector: (data) => data.title
+                            },
+                            {
+                                heading: 'Tags',
+                                selector: (data) => data.tags.map((tag, i) => <Badge key={i} className="mx-1">{tag}</Badge>)
+                            },
+                            {
+                                heading: 'Reactions',
+                                selector: (data) => data.reactions
+                            },
+                        ]}
+                    />
                 )}
             />
         )

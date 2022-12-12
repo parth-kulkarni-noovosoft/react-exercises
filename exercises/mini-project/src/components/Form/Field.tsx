@@ -18,7 +18,7 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         onChange: (data) => {
             store.removeErrorAt(name, index);
             store.setValue(name, data);
-            onChange?.(data);
+            onChange?.({ name, value: data });
         },
         disabled: store.isDisabled,
         invalid: store.hasErrorsAt(name, index),

@@ -1,8 +1,10 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { List } from "reactstrap";
+import { Input } from "reactstrap";
 import { RootStoreContext } from "../context/RootStoreContext";
+import Select from "./Inputs/Select";
 import Listing from "./Listing/Listing";
+import Table from "./Table/Table";
 
 @observer
 class ProductListing extends React.Component {
@@ -12,18 +14,46 @@ class ProductListing extends React.Component {
     render(): React.ReactNode {
         if (!this.context) return;
 
-        const productListingStore = this.context.productStore.productsListingStore;
+        const productStore = this.context.productStore;
 
         return (
             <Listing
-                listStore={productListingStore}
+                listStore={productStore.productsListingStore}
                 render={(products) => (
-                    <List
-                        type='unstyled'
-                    >
-                        {products.map(d => <div key={d.id}>{d.id}: {d.title}</div>)}
-                    </List>
+                    <Table
+                        tableContent={products}
+                        colConfigs={[
+                            {
+                                heading: 'Name',
+                                selector: (data) => data.title,
+                            },
+                            {
+                                heading: 'Category',
+                                selector: (data) => data.category
+                            },
+                            {
+                                heading: 'Price',
+                                selector: (data) => data.price
+                            },
+                            {
+                                heading: 'Quantity',
+                                selector: (data) => data.stock
+                            },
+                        ]}
+                    />
                 )}
+                controls={({ onChange, value }) => (<>
+                    <Input
+                        value={value.searchQuery}
+                        onChange={(e) => onChange({ name: 'searchQuery', value: e.target.value })}
+                    />
+                    <Select
+                        isDisabled={false}
+                        onChange={(value) => onChange({ name: 'filterQuery', value })}
+                        value={value.filterQuery}
+                        options={productStore.categories}
+                    />
+                </>)}
             />
         )
     }

@@ -5,7 +5,7 @@ type TSelectOptions = string[] | { name: string, value: string }[]
 
 interface ISelectProps {
     value: string
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChange: (value: string) => void
     isDisabled: boolean
     options: TSelectOptions
     invalid?: boolean
@@ -32,7 +32,7 @@ const Select: React.FC<ISelectProps> = ({ isDisabled, onChange, value, options, 
         <Input
             type="select"
             value={value}
-            onChange={onChange}
+            onChange={(e) => onChange(e.target.value)}
             disabled={isDisabled}
             invalid={invalid}
         >
