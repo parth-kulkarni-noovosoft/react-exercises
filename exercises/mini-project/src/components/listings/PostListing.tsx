@@ -12,11 +12,12 @@ class PostListing extends React.Component {
 
     render(): React.ReactNode {
         if (!this.context) return;
-        const postListingStore = this.context.postStore.postListingStore;
+        const postStore = this.context.postStore;
+        const userStore = this.context.userStore;
 
         return (
             <Listing
-                listStore={postListingStore}
+                listStore={postStore.postListingStore}
                 configuration={{
                     displaySearch: false
                 }}
@@ -36,6 +37,10 @@ class PostListing extends React.Component {
                                 heading: 'Reactions',
                                 selector: (data) => data.reactions
                             },
+                            {
+                                heading: 'Username',
+                                selector: (data) => userStore.userMap.get(data.userId)?.username ?? 'Loading...'
+                            }
                         ]}
                     />
                 )}

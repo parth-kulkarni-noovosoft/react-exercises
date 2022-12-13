@@ -36,6 +36,7 @@ export interface IUser {
     id: number
     firstName: string
     lastName: string
+    username: string
 }
 
 export interface IRenderData<T> {

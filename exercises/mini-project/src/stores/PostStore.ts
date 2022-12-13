@@ -1,4 +1,5 @@
-import { IPost, Paginated, QueryData } from "../interfaces";
+import { reaction } from "mobx";
+import { IPost, IUser, Paginated, QueryData } from "../interfaces";
 import Networking from "../networking";
 import ListTableStore from "./ListTableStore";
 import RootStore from "./RootStore";
@@ -10,9 +11,25 @@ class PostStore {
         public rootStore: RootStore
     ) {
         this.postListingStore = new ListTableStore('posts', this.getPosts);
+
+        reaction(
+            () => this.postListingStore.entities,
+            (posts) => {
+                const userStore = this.rootStore.userStore;
+                Promise.all(
+                    posts.map(post =>
+                        userStore.userMap.has(post.userId)
+                            ? null
+                            : userStore.getUser(post.userId)
+                    )
+                ).then(users => userStore.updateMap(
+                    users.filter((user): user is IUser => user !== null)
+                ))
+            }
+        )
     }
 
-    getPosts = async (queryData: QueryData) => {
+    getPosts = (queryData: QueryData) => {
         const {
             pageNumber,
             pageSize
