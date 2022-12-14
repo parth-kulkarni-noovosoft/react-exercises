@@ -44,6 +44,7 @@ export interface IRenderData<T> {
     onChange: (value: T[keyof T]) => void
     disabled: boolean
     invalid: boolean
+    errors?: string | string[]
 }
 
 export interface IFieldProps<T> {
@@ -54,14 +55,15 @@ export interface IFieldProps<T> {
     onChange?: (event: { value: T[keyof T], name: keyof T }) => void
     storeProps?: FormStore<T>
     required?: boolean
+    hideError?: boolean
 }
 
 export interface IJsonInputProps<T> {
-    name: string
     value: T[]
     entity: (renderData: IRenderData<any>) => JSX.Element
     disabled: boolean
     onChange: (data: T[]) => void
+    errors?: string[]
 }
 
 export type QueryData<T extends unknown[] | object = unknown[] | object> = Pick<

@@ -4,7 +4,16 @@ import FormStoreContext from "../../../context/FormStoreContext";
 import { IFieldProps, IRenderData } from "../../../interfaces";
 
 function Field<T>(props: IFieldProps<T>): JSX.Element {
-    const { storeProps, onChange, render, name, label, required, index } = props;
+    const {
+        storeProps,
+        onChange,
+        render,
+        name,
+        label,
+        required,
+        index,
+        hideError
+    } = props;
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const store = storeProps ?? useContext(FormStoreContext);
@@ -22,6 +31,7 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
         },
         disabled: store.isDisabled,
         invalid: store.hasErrorsAt(name, index),
+        errors: store.getError(name)
     }
 
     const RequiredSymbol = required
@@ -30,14 +40,15 @@ function Field<T>(props: IFieldProps<T>): JSX.Element {
 
     const Label = label && <label>{label}{RequiredSymbol}</label>
 
+    const Error = renderData.invalid
+        ? <div><small className="text-danger">{store.getError(name, index)}</small></div>
+        : null
+
     return (
         <div>
             {Label}
             {render(renderData)}
-            {renderData.invalid
-                ? <div><small className="text-danger">{store.getError(name, index)}</small></div>
-                : null
-            }
+            {!hideError && Error}
         </div>
     )
 }

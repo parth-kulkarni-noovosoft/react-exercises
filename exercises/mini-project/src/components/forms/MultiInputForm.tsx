@@ -57,7 +57,6 @@ const MultiInputForm = () => {
                 render={({ value, disabled, onChange }) => (
                     <JsonInput
                         value={value}
-                        name='hobbies'
                         disabled={disabled}
                         onChange={onChange}
                         entity={({ disabled, invalid, onChange, value }) => (
@@ -77,12 +76,13 @@ const MultiInputForm = () => {
                 name='items'
                 label='Items'
                 required
-                render={({ value, disabled, onChange }) => (
+                hideError
+                render={({ value, disabled, onChange, errors }) => (
                     <JsonInput
                         value={value}
-                        name='items'
                         disabled={disabled}
                         onChange={onChange}
+                        errors={errors as string[]}
                         entity={({ disabled, invalid, onChange, value }) => (
                             <Input
                                 disabled={disabled}

@@ -2,7 +2,7 @@ import { action, makeObservable, observable } from "mobx";
 
 class FormStore<T> {
     @observable data: T;
-    @observable errorFields: Partial<Record<keyof T | string, string>> = {};
+    @observable errorFields: Partial<Record<keyof T | string, string | string[]>> = {};
     @observable requiredFields: Set<keyof T> = new Set();
     @observable isDisabled = false
     initialValues: T;
@@ -13,10 +13,6 @@ class FormStore<T> {
         this.initialValues = data;
     }
 
-    getKey = (key: keyof T, index?: number): keyof typeof this.errorFields => {
-        return `${String(key)}${index === undefined ? '' : `.${index}`}`
-    }
-
     getValue = (key: keyof T) => this.data[key];
 
     @action setIsDisabled = (isDisabled: boolean) => this.isDisabled = isDisabled;
@@ -25,27 +21,36 @@ class FormStore<T> {
 
     @action resetValues = () => this.data = this.initialValues;
 
-    @action addErrorAt = (key: keyof T, error: string, index?: number) => this.errorFields[this.getKey(key, index)] = error;
+    @action addErrorAt = (key: keyof T, error: string, index?: number) => {
+        if (index !== undefined) {
+            if (!this.errorFields[key]) {
+                this.errorFields[key] = [];
+            }
+            (this.errorFields[key] as string[])[index] = error;
+            return;
+        }
+        this.errorFields[key] = error;
+    }
 
     @action removeErrorAt = (key: keyof T, index?: number) => {
         if (index !== undefined) {
-            return delete this.errorFields[this.getKey(key, index)];
+            return delete (this.errorFields[key] as string[])[index];
         }
 
-        for (const errorFieldKey in this.errorFields) {
-            if (errorFieldKey.startsWith(String(key))) {
-                delete this.errorFields[errorFieldKey];
-            }
-        }
+        delete this.errorFields[key];
     }
 
     @action resetErrors = () => this.errorFields = {};
 
-    hasErrorsAt = (key: keyof T, index?: number) => !!this.errorFields[this.getKey(key, index)]
+    getError = (key: keyof T, index?: number) => index !== undefined
+        ? (this.errorFields[key] as string[])[index]
+        : (this.errorFields[key])
+
+
+    hasErrorsAt = (key: keyof T, index?: number) => !!this.getError(key, index);
 
     hasError = () => Object.keys(this.errorFields).length !== 0
 
-    getError = (key: keyof T, index?: number) => this.errorFields[this.getKey(key, index)];
 
     @action addRequiredField = (key: keyof T) => this.requiredFields.add(key);
 
@@ -54,13 +59,7 @@ class FormStore<T> {
 
         for (const requiredKey of this.requiredFields.values()) {
             const currentValue = this.getValue(requiredKey);
-
             if (Array.isArray(currentValue)) {
-                if (currentValue.length === 0) {
-                    this.addErrorAt(requiredKey, 'Add at least 1 value');
-                    continue;
-                }
-
                 currentValue.forEach((value, index) => {
                     if (value === '') {
                         this.addErrorAt(requiredKey, 'Field cannot be empty', index);
