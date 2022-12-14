@@ -1,8 +1,8 @@
 import { action, makeObservable, observable } from "mobx";
-import { Paginated, QueryData } from "../interfaces";
+import { QueryData } from "../interfaces";
 
-class ListTableStore<T> {
-    @observable entities: T[] = []
+class ListTableStore<T extends unknown[] | object> {
+    @observable entities: T | null = null;
     @observable pageSize = 10;
     @observable pageNumber = 1;
     @observable totalPages = 1;
@@ -12,8 +12,7 @@ class ListTableStore<T> {
     @observable filterQuery = 'All';
 
     constructor(
-        public name: string,
-        public fetcher: (queryData: QueryData<T>) => Promise<Paginated<T>>
+        public fetcher: (queryData: QueryData<T>) => Promise<T>
     ) {
         makeObservable(this);
 
@@ -33,10 +32,12 @@ class ListTableStore<T> {
 
     @action setIsLoading = (isLoading: boolean) => this.isLoading = isLoading;
 
-    @action setData = (data: Paginated<T>) => {
+    @action setData = (data: T) => {
         this.setIsLoading(false);
-        this.entities = data[this.name];
-        this.totalPages = data.total / this.pageSize;
+        this.entities = data;
+        if ('total' in data) {
+            this.totalPages = (data.total as number) / this.pageSize;
+        }
     }
 
     @action setPageNumber = (pageNumber: number) => {

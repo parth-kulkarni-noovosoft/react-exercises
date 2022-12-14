@@ -8,7 +8,7 @@ export type Columns<T> = {
 }
 
 interface ITableProps<T> {
-    tableContent: T[];
+    tableContent: T[] | null;
     colConfigs: Columns<T>[];
 }
 
@@ -23,7 +23,7 @@ function Table<T extends { id: string | number }>(props: ITableProps<T>) {
                 <tr>
                     {colConfigs.map((config, index) => <th key={index}>{config.heading}</th>)}
                 </tr>
-                {tableContent.map((entity, index) => (
+                {tableContent?.map((entity, index) => (
                     <tr key={index}>
                         {colConfigs.map((config, index) => (
                             <td

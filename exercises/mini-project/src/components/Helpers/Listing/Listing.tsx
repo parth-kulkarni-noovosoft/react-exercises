@@ -5,19 +5,19 @@ import { ButtonGroup, Button, Container, Input } from "reactstrap";
 import ListTableStore from "../../../stores/ListTableStore";
 import Select from "../Inputs/Select";
 
-interface IListingProps<T> {
+interface IListingProps<T extends unknown[] | object> {
     listStore: ListTableStore<T>
     configuration?: {
         displaySearch?: boolean,
         displayFilter?: boolean,
         options?: string[]
     }
-    render: (data: T[]) => JSX.Element | JSX.Element[]
+    render: (data: T) => JSX.Element | JSX.Element[]
 }
 
 
 @observer
-class Listing<T> extends React.Component<IListingProps<T>> {
+class Listing<T extends object | unknown[]> extends React.Component<IListingProps<T>> {
     render(): React.ReactNode {
         const { listStore } = this.props;
         if (!listStore.entities) return null;
@@ -56,7 +56,7 @@ class Listing<T> extends React.Component<IListingProps<T>> {
                         ? <div>Loading pls wait...</div>
                         : this.props.render(listStore.entities)
                 }
-                <ButtonGroup>
+                <ButtonGroup className="d-flex">
                     <Button
                         onClick={() => listStore.setPageNumber(listStore.pageNumber - 1)}
                         disabled={listStore.pageNumber === 1}

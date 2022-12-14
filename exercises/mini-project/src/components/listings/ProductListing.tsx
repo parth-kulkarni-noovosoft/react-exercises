@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { RootStoreContext } from "../../context/RootStoreContext";
+import RootStoreContext from "../../context/RootStoreContext";
 import Listing from "../Helpers/Listing/Listing";
 import Table from "../Helpers/Table/Table";
 
@@ -13,17 +13,19 @@ class ProductListing extends React.Component {
         if (!this.context) return;
 
         const productStore = this.context.productStore;
+        const categories = productStore.productCategoriesStore.entities ?? [];
+        if (!categories.includes('All')) categories.push('All');
 
         return (
             <Listing
                 listStore={productStore.productsListingStore}
                 configuration={{
                     displayFilter: true,
-                    options: productStore.categories
+                    options: categories
                 }}
                 render={(products) => (
                     <Table
-                        tableContent={products}
+                        tableContent={products.products}
                         colConfigs={[
                             {
                                 heading: 'Name',

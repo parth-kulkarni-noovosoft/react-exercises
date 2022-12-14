@@ -1,33 +1,20 @@
-import { action, makeObservable, observable } from "mobx"
 import { IProduct, Paginated, QueryData } from "../interfaces";
 import Networking from "../networking"
 import ListTableStore from "./ListTableStore"
 import RootStore from "./RootStore"
 
 class ProductStore {
-    @observable categories: string[] = [];
-    public productsListingStore: ListTableStore<IProduct>;
+    public productsListingStore: ListTableStore<Paginated<IProduct>>;
+    public productCategoriesStore: ListTableStore<string[]>;
 
     constructor(
         public rootStore: RootStore
     ) {
-        makeObservable(this);
-        this.productsListingStore = new ListTableStore('products', this.getProducts);
-        this.getCategories();
+        this.productsListingStore = new ListTableStore(this.getProducts);
+        this.productCategoriesStore = new ListTableStore(this.getCategories);
     }
 
-    @action setCategories = (categories: string[]) => {
-        if (this.categories.includes('All')) {
-            this.categories = categories
-        } else {
-            this.categories = [...categories, 'All'];
-        }
-    };
-
-    getCategories = async () => {
-        const data = await Networking.getData<string[]>('products/categories');
-        this.setCategories(data);
-    }
+    getCategories = async () => Networking.getData<string[]>('products/categories');
 
     getProducts(queryData: QueryData) {
         const {

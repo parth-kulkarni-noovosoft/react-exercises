@@ -1,18 +1,10 @@
 import React from 'react';
 import RootStore from '../stores/RootStore';
+import { initRouter } from '../routing/initRouter';
 
-const rootStore = new RootStore();
+const routerStore = initRouter()
+const rootStore = new RootStore(routerStore);
 
-export const RootStoreContext = React.createContext<RootStore>(rootStore);
+const RootStoreContext = React.createContext<RootStore>(rootStore);
 
-class RootStoreContextProvider extends React.Component<React.PropsWithChildren> {
-    render(): React.ReactNode {
-        return(
-            <RootStoreContext.Provider value={rootStore}>
-                {this.props.children}
-            </RootStoreContext.Provider>
-        )
-    }
-}
-
-export default RootStoreContextProvider;
+export default RootStoreContext;

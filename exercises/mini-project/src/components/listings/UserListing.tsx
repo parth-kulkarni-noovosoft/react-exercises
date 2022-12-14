@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { RootStoreContext } from "../../context/RootStoreContext";
+import RootStoreContext from "../../context/RootStoreContext";
 import Listing from "../Helpers/Listing/Listing";
 import Table from "../Helpers/Table/Table";
 
@@ -18,7 +18,7 @@ class UserListing extends React.Component {
                 listStore={userListingStore}
                 render={(users) => (
                     <Table
-                        tableContent={users}
+                        tableContent={users.users}
                         colConfigs={[
                             {
                                 heading: 'First name',

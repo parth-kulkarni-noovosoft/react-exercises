@@ -64,7 +64,7 @@ export interface IJsonInputProps<T> {
     onChange: (data: T[]) => void
 }
 
-export type QueryData<T = unknown> = Pick<
+export type QueryData<T extends unknown[] | object = unknown[] | object> = Pick<
     ListTableStore<T>,
     'pageNumber' | 'pageSize' | 'searchQuery' | 'filterQuery'
 >

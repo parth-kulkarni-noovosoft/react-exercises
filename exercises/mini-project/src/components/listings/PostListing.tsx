@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "reactstrap";
-import { RootStoreContext } from "../../context/RootStoreContext";
+import RootStoreContext from "../../context/RootStoreContext";
 import Listing from "../Helpers/Listing/Listing";
 import Table from "../Helpers/Table/Table";
 
@@ -23,7 +23,7 @@ class PostListing extends React.Component {
                 }}
                 render={(posts) => (
                     <Table
-                        tableContent={posts}
+                        tableContent={posts.posts}
                         colConfigs={[
                             {
                                 heading: 'Title',

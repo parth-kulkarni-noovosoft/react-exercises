@@ -5,23 +5,24 @@ import ListTableStore from "./ListTableStore";
 import RootStore from "./RootStore";
 
 class PostStore {
-    postListingStore: ListTableStore<IPost>;
+    postListingStore: ListTableStore<Paginated<IPost>>;
 
     constructor(
         public rootStore: RootStore
     ) {
-        this.postListingStore = new ListTableStore('posts', this.getPosts);
+        this.postListingStore = new ListTableStore(this.getPosts);
 
         reaction(
             () => this.postListingStore.entities,
             (posts) => {
                 const userStore = this.rootStore.userStore;
                 Promise.all(
-                    posts.map(post =>
-                        userStore.userMap.has(post.userId)
-                            ? null
-                            : userStore.getUser(post.userId)
-                    )
+                    (posts ?? { posts: [] })
+                        .posts.map(post =>
+                            userStore.userMap.has(post.userId)
+                                ? null
+                                : userStore.getUser(post.userId)
+                        )
                 ).then(users => userStore.updateMap(
                     users.filter((user): user is IUser => user !== null)
                 ))

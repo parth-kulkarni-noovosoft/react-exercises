@@ -5,14 +5,14 @@ import ListTableStore from "./ListTableStore";
 import RootStore from "./RootStore";
 
 class UserStore {
-    userListingStore: ListTableStore<IUser>;
+    userListingStore: ListTableStore<Paginated<IUser>>;
     @observable userMap: Map<number, IUser> = new Map();
 
     constructor(
         public rootStore: RootStore
     ) {
         makeObservable(this);
-        this.userListingStore = new ListTableStore('users', this.getUsers);
+        this.userListingStore = new ListTableStore(this.getUsers);
     }
 
     @action updateMap = (users: IUser[]) => users.forEach((user) => this.userMap.set(user.id, user));

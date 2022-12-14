@@ -1,19 +1,20 @@
-import { Container } from 'reactstrap';
+import { RouterContext, RouterView } from 'mobx-state-router';
+import RootStoreContext from './context/RootStoreContext';
+import { viewMap } from './routing';
+import Navbar from './components/Navbar/Navbar';
+
 import './App.css';
-import PostListing from './components/listings/PostListing';
-import ProductListing from './components/listings/ProductListing';
-import UserListing from './components/listings/UserListing';
-import RootStoreContextProvider from './context/RootStoreContext';
 
 function App() {
   return (
-    <RootStoreContextProvider>
-      <Container className='my-4 p-2'>
-        <ProductListing />
-        <UserListing />
-        <PostListing />
-      </Container>
-    </RootStoreContextProvider>
+    <RootStoreContext.Consumer>
+      {(routerStore) => (
+        <RouterContext.Provider value={routerStore.routerStore} >
+          <Navbar />
+          <RouterView viewMap={viewMap} />
+        </RouterContext.Provider>
+      )}
+    </RootStoreContext.Consumer>
   );
 }
 
