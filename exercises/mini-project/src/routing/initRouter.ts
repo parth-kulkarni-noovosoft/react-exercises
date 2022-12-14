@@ -8,7 +8,11 @@ import {
 export const routes = [
     {
         name: 'listings',
-        pattern: '/listings/:entity'
+        pattern: '/listings/:id?'
+    },
+    {
+        name: 'forms',
+        pattern: '/forms/:id?'
     },
     {
         name: 'notFound',

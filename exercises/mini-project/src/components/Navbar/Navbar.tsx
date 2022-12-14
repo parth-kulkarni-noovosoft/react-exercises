@@ -13,17 +13,17 @@ class Navbar extends React.Component {
         if (!this.context) return null;
         const getRouterClassName = (routeName: string) => {
             const baseClassName = 'text-decoration-none btn';
-            
+
             if (!this.context) return baseClassName;
             const curRoute = this.context?.routerStore.getCurrentRoute();
             if (!curRoute) return baseClassName;
 
-            const { entity } = this.context.routerStore.routerState.params;
-            if (entity === routeName) return `${baseClassName} btn-primary`
+            const name = this.context.routerStore.routerState.routeName;
+            if (name === routeName) return `${baseClassName} btn-primary`
             return `${baseClassName} btn-outline-primary`;
         }
 
-        getRouterClassName('');
+        const routes = ['listings', 'forms']
 
         return (
             <div>
@@ -31,33 +31,15 @@ class Navbar extends React.Component {
                     light
                 >
                     <Nav className="m-auto gap-4">
-                        <NavItem>
-                            <RouterLink
-                                routeName="listings"
-                                params={{
-                                    'entity': 'posts'
-                                }}
-                                className={getRouterClassName('posts')}
-                            >Posts</RouterLink>
-                        </NavItem>
-                        <NavItem>
-                            <RouterLink
-                                routeName="listings"
-                                params={{
-                                    'entity': 'products'
-                                }}
-                                className={getRouterClassName('products')}
-                            >Products</RouterLink>
-                        </NavItem>
-                        <NavItem>
-                            <RouterLink
-                                routeName="listings"
-                                params={{
-                                    'entity': 'users'
-                                }}
-                                className={getRouterClassName('users')}
-                            >Users</RouterLink>
-                        </NavItem>
+                        {(routes).map((route) => (
+                            <NavItem>
+                                <RouterLink
+                                    routeName={route}
+                                    className={getRouterClassName(route)}
+                                >{route.substring(0, 1).toUpperCase() + route.substring(1)}</RouterLink>
+                            </NavItem>
+
+                        ))}
                     </Nav>
                 </BootstrapNavbar>
             </div>
