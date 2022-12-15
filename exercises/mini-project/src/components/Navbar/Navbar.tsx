@@ -32,7 +32,9 @@ class Navbar extends React.Component {
                 >
                     <Nav className="m-auto gap-4">
                         {(routes).map((route) => (
-                            <NavItem>
+                            <NavItem
+                                key={route}
+                            >
                                 <RouterLink
                                     routeName={route}
                                     className={getRouterClassName(route)}

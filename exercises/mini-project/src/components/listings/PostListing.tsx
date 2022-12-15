@@ -10,6 +10,10 @@ class PostListing extends React.Component {
     context: React.ContextType<typeof RootStoreContext> | undefined
     static contextType = RootStoreContext;
 
+    componentDidMount() {
+      this.context?.postStore.postListingStore.fetchData();
+    }
+
     render(): React.ReactNode {
         if (!this.context) return;
         const postStore = this.context.postStore;

@@ -70,3 +70,37 @@ export type QueryData<T extends unknown[] | object = unknown[] | object> = Pick<
     ListTableStore<T>,
     'pageNumber' | 'pageSize' | 'searchQuery' | 'filterQuery'
 >
+
+export enum FilterTypes {
+    SELECT = 'SELECT',
+    NUMBER = 'RANGE',
+    TEXT = 'TEXT',
+    BOOLEAN = 'BOOLEAN'
+}
+
+export interface IFilterSelectOptions {
+    type: FilterTypes.SELECT
+    options: string[]
+    displayName: string
+}
+
+export interface IFilterGenericOptions {
+    type: Exclude<FilterTypes, FilterTypes.SELECT>
+    displayName: string
+}
+
+export type FilterOptions = IFilterSelectOptions | IFilterGenericOptions;
+
+export interface IFilterPickerProps {
+    configuration: {
+        [name: string]: FilterOptions
+    }
+    onChange?: (data: Record<string, string | number | boolean>) => void
+    autoFetch?: boolean
+}
+
+export interface IFilter {
+    name: string
+    type: FilterTypes
+    value: number | boolean | string
+}

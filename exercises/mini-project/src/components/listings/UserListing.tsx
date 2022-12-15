@@ -9,6 +9,9 @@ class UserListing extends React.Component {
     context: React.ContextType<typeof RootStoreContext> | undefined
     static contextType = RootStoreContext;
 
+    componentDidMount() {
+        this.context?.userStore.userListingStore.fetchData();
+    }
     render(): React.ReactNode {
         if (!this.context) return;
         const userListingStore = this.context.userStore.userListingStore;

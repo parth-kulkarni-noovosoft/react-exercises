@@ -2,8 +2,9 @@ import { observer } from "mobx-react";
 import React from "react";
 import { CaretLeft, CaretRight } from "react-bootstrap-icons";
 import { ButtonGroup, Button, Container, Input } from "reactstrap";
+import { IFilterPickerProps } from "../../../interfaces";
 import ListTableStore from "../../../stores/ListTableStore";
-import Select from "../Inputs/Select";
+import FilterPicker from "../FilterPicker/FilterPicker";
 
 interface IListingProps<T extends unknown[] | object> {
     listStore: ListTableStore<T>
@@ -13,14 +14,14 @@ interface IListingProps<T extends unknown[] | object> {
         options?: string[]
     }
     render: (data: T) => JSX.Element | JSX.Element[]
+    filterConfiguration?: IFilterPickerProps
 }
-
 
 @observer
 class Listing<T extends object | unknown[]> extends React.Component<IListingProps<T>> {
     render(): React.ReactNode {
         const { listStore } = this.props;
-        if (!listStore.entities) return null;
+        if (!listStore.entities || !listStore.filteredEntities) return null;
 
         const configuration = {
             displayFilter: false,
@@ -37,24 +38,26 @@ class Listing<T extends object | unknown[]> extends React.Component<IListingProp
             />
         </>)
 
-        const FilterDropDown = (<>
-            <div>Filter</div>
-            <Select
-                isDisabled={false}
-                onChange={(value) => listStore.setFilterQuery(value)}
-                value={listStore.filterQuery}
-                options={configuration.options}
-            />
-        </>)
-
         return (
             <Container className="py-2">
                 {configuration.displaySearch && SearchBar}
-                {configuration.displayFilter && FilterDropDown}
+                {configuration.displayFilter && (
+                    <FilterPicker
+                        {...this.props.filterConfiguration!}
+                        onChange={(data) => listStore.setFilterQuery(
+                            data,
+                            this.props.filterConfiguration?.autoFetch
+                        )}
+                    />)
+                }
                 {
                     listStore.isLoading
                         ? <div>Loading pls wait...</div>
-                        : this.props.render(listStore.entities)
+                        : this.props.render(
+                            Object.keys(listStore.filterQuery).length !== 0
+                                ? listStore.filteredEntities
+                                : listStore.entities
+                        )
                 }
                 <ButtonGroup className="d-flex">
                     <Button

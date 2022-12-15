@@ -3,23 +3,25 @@ import { QueryData } from "../interfaces";
 
 class ListTableStore<T extends unknown[] | object> {
     @observable entities: T | null = null;
-    @observable pageSize = 10;
     @observable pageNumber = 1;
     @observable totalPages = 1;
     @observable isLoading = false;
 
+    @observable filteredEntities: T | null = null;
+
     @observable searchQuery = '';
-    @observable filterQuery = 'All';
+    @observable filterQuery: Record<string, string | number | boolean> = {};
 
     constructor(
-        public fetcher: (queryData: QueryData<T>) => Promise<T>
+        public fetcher: (queryData: QueryData<T>) => Promise<T>,
+        public pageSize = 10
     ) {
         makeObservable(this);
-
-        this.fetchData();
     }
 
-    fetchData = async () => {
+    public fetchData = async () => {
+        if (this.isLoading) return;
+
         this.setIsLoading(true);
         const data = await this.fetcher({
             filterQuery: this.filterQuery,
@@ -34,7 +36,15 @@ class ListTableStore<T extends unknown[] | object> {
 
     @action setData = (data: T) => {
         this.setIsLoading(false);
+        this.setFilteredData(data);
         this.entities = data;
+        if ('total' in data) {
+            this.totalPages = (data.total as number) / this.pageSize;
+        }
+    }
+
+    @action setFilteredData = (data: T) => {
+        this.filteredEntities = data;
         if ('total' in data) {
             this.totalPages = (data.total as number) / this.pageSize;
         }
@@ -47,10 +57,10 @@ class ListTableStore<T extends unknown[] | object> {
 
     @action setPageSize = (pageSize: number) => this.pageSize = pageSize;
 
-    @action setFilterQuery = (filterQuery: string) => {
+    @action setFilterQuery = (filterQuery: Record<string, string | number | boolean>, autoFetch = true) => {
         this.filterQuery = filterQuery;
         this.pageNumber = 1;
-        this.fetchData();
+        if (autoFetch) this.fetchData();
     }
 
     @action setSearchQuery = (searchQuery: string) => {

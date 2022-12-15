@@ -13,9 +13,7 @@ class Listings extends React.Component {
     render(): React.ReactNode {
         if (!this.context) return null;
 
-        const routerStore = this.context.routerStore;
-
-        const { id } = routerStore.routerState.params;
+        const { id } = this.context.routerStore.routerState.params;
 
         const cardsData = [
             {

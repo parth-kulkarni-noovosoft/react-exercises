@@ -15,9 +15,7 @@ class Listings extends React.Component {
     render(): React.ReactNode {
         if (!this.context) return null;
 
-        const routerStore = this.context.routerStore;
-
-        const { id } = routerStore.routerState.params;
+        const { id } = this.context.routerStore.routerState.params;
 
         const cardsData = [
             {
@@ -27,7 +25,7 @@ class Listings extends React.Component {
             },
             {
                 title: 'Products',
-                description: 'Listing of Products with serach and category fitler.',
+                description: 'Listing of Products with search and category fitler.',
                 id: 'products'
             },
             {
